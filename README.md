@@ -1,9 +1,7 @@
 # miaohui-project
 
-## Project setup
-```
-npm install
-```
+## 项目名称
+* 妙汇APP
 
 ### Compiles and hot-reloads for development
 ```
