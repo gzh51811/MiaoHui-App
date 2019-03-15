@@ -1,11 +1,8 @@
 <template>
-    <div class="footer">
-        <ul>
-            <li v-for="nav in $store.state.navs" :key="nav.name">
-                <!-- <img src="" alt=""> -->
-                <p>{{nav.name}}</p>
-            </li>
-        </ul>
+    <div class="main">
+        <div class="header">
+            首页
+        </div>
     </div>
 </template>
 
@@ -14,3 +11,12 @@ export default {
     
 }
 </script>
+<style lang="scss" scoped>
+    .header{
+    display: flex;
+    background: #d43c33;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    }
+</style>
