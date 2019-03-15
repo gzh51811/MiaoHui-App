@@ -3,7 +3,7 @@
 ## 项目名称
 * 妙汇APP
 
-### Compiles and hot-reloads for development
+### 成员
 ```
 npm run serve
 ```
