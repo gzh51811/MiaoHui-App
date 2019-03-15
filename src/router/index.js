@@ -49,28 +49,36 @@ let router = new VueRouter({
             }
         }
     },{
-        name:'Home_main',
+        name:'Home',
         path:'/home',
-        component:Home_main
-    },{
-        name:'Home_article',
-        path:'/home_article',
-        component:Home_article
-    },{
-        name:'Home_cart',
-        path:'/home_cart',
-        component:Home_cart,
-        meta: { 
-            requiresAuth: true 
-        }
-    },{
-        name:'Home_theme',
-        path:'/home_theme',
-        component:Home_theme
-    },{
-        name:'Home_mine',
-        path:'/home_mine',
-        component:Home_mine
+        redirect:'/home/main',
+        component:Home,
+        children:[
+            {
+                name:'Home_main',
+                path:'/home/main',
+                component:Home_main
+            },{
+                name:'Home_article',
+                path:'/home/article',
+                component:Home_article
+            },{
+                name:'Home_cart',
+                path:'/home/cart',
+                component:Home_cart,
+                meta: { 
+                    requiresAuth: true 
+                }
+            },{
+                name:'Home_theme',
+                path:'/home/theme',
+                component:Home_theme
+            },{
+                name:'Home_mine',
+                path:'/home/mine',
+                component:Home_mine
+            }
+        ]
     },{
         path:'*',
         component:notfound
