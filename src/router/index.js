@@ -20,10 +20,6 @@ let router = new VueRouter({
         path:'/',
         redirect:'/home'
     },{
-        name:'Home',
-        path:'/home',
-        component:Home
-    },{
         name:'List',
         path:'/list',
         component:List
@@ -54,7 +50,7 @@ let router = new VueRouter({
         }
     },{
         name:'Home_main',
-        path:'/home/main',
+        path:'/home',
         component:Home_main
     },{
         name:'Home_article',
@@ -62,18 +58,18 @@ let router = new VueRouter({
         component:Home_article
     },{
         name:'Home_cart',
-        path:'/home/cart',
+        path:'/home_cart',
         component:Home_cart,
         meta: { 
             requiresAuth: true 
         }
     },{
         name:'Home_theme',
-        path:'/home/theme',
+        path:'/home_theme',
         component:Home_theme
     },{
         name:'Home_mine',
-        path:'/home/mine',
+        path:'/home_mine',
         component:Home_mine
     },{
         path:'*',

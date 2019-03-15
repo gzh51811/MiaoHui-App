@@ -37,7 +37,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
     .footer{
         position: fixed;
         bottom: 0;
