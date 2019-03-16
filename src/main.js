@@ -5,7 +5,7 @@ import store from './store'
 
 // import api from './api/routers/index.js'
 
-// import './assets/js/rem'
+import './assets/js/rem'
 
 Vue.config.productionTip = false
 

@@ -17,6 +17,6 @@ export default {
     background: #d43c33;
     justify-content: center;
     align-items: center;
-    height: 60px;
+    height: 1.333333rem;
     }
 </style>

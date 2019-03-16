@@ -3,8 +3,12 @@
         <router-view></router-view>
         <div class="footer">
             <ul>
-                <li v-for="nav in navs" :key="nav.name">
-                    <span v-if="nav.name === '首页'"><img :src="nav.icon2"></span>
+                <li v-for="nav in navs" :key="nav.name" @click="changepage(nav.title)">
+                    <span class="active" v-if="nowRouter === 'Home_main' && nav.name === '首页'"><img :src="nav.icon2"></span>
+                    <span class="active" v-else-if="nowRouter === 'Home_article' && nav.name === '妙语连珠'"><img :src="nav.icon2" class="active"></span>
+                    <span class="active" v-else-if="nowRouter === 'Home_theme' && nav.name === '专题'"><img :src="nav.icon2" class="active"></span>
+                    <span class="active" v-else-if="nowRouter === 'Home_cart' && nav.name === '购物车'"><img :src="nav.icon2" class="active"></span>
+                    <span class="active" v-else-if="nowRouter === 'Home_mine' && nav.name === '个人中心'"><img :src="nav.icon2" class="active"></span>
                     <span v-else><img :src="nav.icon1"></span>
                     <p>{{nav.name}}</p>
                 </li>
@@ -18,28 +22,39 @@
 export default {
     data(){
         return {
-            navs:[{
-                name:'首页',
-                icon1:'../assets/image/home.png',
-                icon2:'../assets/image/home-selected.png'
-            },{
-                name:'妙语连珠',
-                icon1:'../assets/image/sparklingDiscourse.png',
-                icon2:'../assets/image/sparklingDiscourse-selected.png'
-            },{
-                name:'专题',
-                icon1:'../assets/image/special-topic.png',
-                icon2:'../assets/image/special-topic-selected.png'
-            },{
-                name:'购物车',
-                icon1:'../assets/image/cart.png',
-                icon2:'../assets/image/cart-selected.png'
-            },{
-                name:'个人中心',
-                icon1:'../assets/image/user-selected.png',
-                icon2:'../assets/image/user-selected.png'
-            }]
+            //底部导航栏数据
+            navs:[],
+            //当前路由
+            nowRouter:''
         }
+    },
+    methods:{
+        //点击跳转路由
+        changepage(name_nav){
+            this.$router.push({name:name_nav});
+        },
+
+        //初始化获取路由信息
+        getRouter(){
+            this.nowRouter = this.$route.name;
+        }
+    },
+    watch:{
+        //监听路由跳转，改变nowRouter
+        $route(to,from){
+            // console.log('watch:',to,from)
+            this.nowRouter = to.name;
+            console.log(this.nowRouter);
+        }
+    },
+    mounted(){
+        // console.log(this)
+    },
+    created(){
+        this.navs = this.$store.state.navs;
+        // console.log(this.navs);
+        this.getRouter();
+
     }
 }
 </script>
@@ -59,7 +74,7 @@ export default {
     overflow: auto;
 }
 .footer{
-    height: 50px;
+    height: 1.333333rem;
     width: 100%;
     background: #444;
     color: #aaa;
@@ -74,8 +89,11 @@ export default {
             justify-content: center;
             align-content: center;
             img{
-                width: 20px;
-                height: 20px;
+                width: .533333rem;
+                height: .533333rem;
+            }
+            .active~p{
+                color: rgb(190, 131, 20);
             }
         }
     }
