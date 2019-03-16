@@ -4,13 +4,37 @@
         <div class="footer">
             <ul>
                 <li v-for="nav in navs" :key="nav.name" @click="changepage(nav.title)">
-                    <span class="active" v-if="nowRouter === 'Home_main' && nav.name === '首页'"><img :src="nav.icon2"></span>
-                    <span class="active" v-else-if="nowRouter === 'Home_article' && nav.name === '妙语连珠'"><img :src="nav.icon2" class="active"></span>
-                    <span class="active" v-else-if="nowRouter === 'Home_theme' && nav.name === '专题'"><img :src="nav.icon2" class="active"></span>
-                    <span class="active" v-else-if="nowRouter === 'Home_cart' && nav.name === '购物车'"><img :src="nav.icon2" class="active"></span>
-                    <span class="active" v-else-if="nowRouter === 'Home_mine' && nav.name === '个人中心'"><img :src="nav.icon2" class="active"></span>
-                    <span v-else><img :src="nav.icon1"></span>
-                    <p>{{nav.name}}</p>
+                    <div class="active" v-if="nowRouter === 'Home_main' && nav.name === '首页'">
+                        <img :src="nav.icon2">
+                        <p>{{nav.name}}</p>
+                    </div>
+                    <div class="active" v-else-if="nowRouter === 'Home_article' && nav.name === '妙语连珠'">
+                        <img :src="nav.icon2">
+                        <p>{{nav.name}}</p>
+                    </div>
+                    <div class="active" v-else-if="nowRouter === 'Home_theme' && nav.name === '专题'">
+                        <img :src="nav.icon2">
+                        <p>{{nav.name}}</p>
+                    </div>
+                    <div class="active" v-else-if="nowRouter === 'Home_cart' && nav.name === '购物车'">
+                        <img :src="nav.icon2">
+                        <p>{{nav.name}}</p>
+                    </div>
+                    <div class="active" v-else-if="nowRouter === 'Home_mine' && nav.name === '个人中心'">
+                        <img :src="nav.icon2">
+                        <p>{{nav.name}}</p>
+                    </div>
+                    <div v-else>
+                        <img :src="nav.icon1">
+                        <p>{{nav.name}}</p>
+                    </div>
+                        <!-- <span class="active" v-else-if="nowRouter === 'Home_article' && nav.name === '妙语连珠'"><img :src="nav.icon2" class="active"></span>
+                        <span class="active" v-else-if="nowRouter === 'Home_theme' && nav.name === '专题'"><img :src="nav.icon2" class="active"></span>
+                        <span class="active" v-else-if="nowRouter === 'Home_cart' && nav.name === '购物车'"><img :src="nav.icon2" class="active"></span>
+                        <span class="active" v-else-if="nowRouter === 'Home_mine' && nav.name === '个人中心'"><img :src="nav.icon2" class="active"></span>
+                        <span v-else><img :src="nav.icon1"></span>
+                        <p>{{nav.name}}</p> -->
+                    
                 </li>
             </ul>
         </div>
@@ -74,10 +98,10 @@ export default {
     overflow: auto;
 }
 .footer{
-    height: 1.333333rem;
+    height: 1.6rem;
     width: 100%;
-    background: #444;
-    color: #aaa;
+    background: #353638;
+    color: rgb(201, 200, 200);
     ul{
         height: 100%;
         width: 100%;
@@ -85,15 +109,27 @@ export default {
         li{
             width: 25%;
             display: flex;
-            flex-direction: column;
             justify-content: center;
-            align-content: center;
-            img{
-                width: .533333rem;
-                height: .533333rem;
+            font-weight: bold;
+            font-size: .373333rem;
+            div{
+                width: 100%;
+                height: 100%; 
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                img{
+                    width: .533333rem;
+                    height: .533333rem;
+                }
+                p{
+                    margin-top: .04rem;
+                }
             }
+            .active{background: #20210f;}
             .active~p{
-                color: rgb(190, 131, 20);
+                color: rgb(207, 142, 20);
             }
         }
     }
