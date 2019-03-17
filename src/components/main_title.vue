@@ -5,8 +5,8 @@
             <div></div>
         </div>
         <div class="content">
-            <ul :style="{top:ul_top+'px'}">
-                <li v-for="mes1 in mes1" :key="mes1.id"><span></span>{{mes1.con}}</li>
+            <ul :style="{top:-ul_top+'rem'}">
+                <li v-for="(m,index) in mes" :key="index"><span></span>{{m.con}}</li>
             </ul>
         </div>
     </div>
@@ -17,23 +17,39 @@
 export default {
     data(){
         return {
-            mes1:[
-                {con:'虐前男友之：攻心为上',id:1},
-                {con:'猪猪侠的时光机',id:2},
-                {con:'妈妈再也不用担心电费太多了',id:3},
-                {con:'我要跳滑梯，谁也别拦我',id:4},
-                {con:'不会发点的足球不是好足球',id:5},
-                {con:'平凡的纸巾耍起心机来也能让你欲罢不能',id:6}
+            mes:[
+                {con:'虐前男友之：攻心为上'},
+                {con:'猪猪侠的时光机'},
+                {con:'妈妈再也不用担心电费太多了'},
+                {con:'我要跳滑梯，谁也别拦我'},
+                {con:'不会发点的足球不是好足球'},
+                {con:'平凡的纸巾耍起心机来也能让你欲罢不能'},
+                {con:'女神节送什么最讨欢心'},
+                {con:'冰岛“黑科技”，冰冻时间'},
+                {con:'活久见：只服务于国王和上帝的蜡烛'},
+                {con:'这是我见过最完美的情人节礼物'},
+                {con:'一次来自墙壁的心灵疗养'},
+                {con:'无限攻心计'}
             ],
             ul_top:0
         }
     },
-    beforeMount(){
-        setInterval(move,2000);
-        function move() {
-            this.ul_top = 65;
+    created(){
+        this.moveTop(this.ul_top);
+    },
+    methods:{
+        moveTop:function(num){
+            // this.mes.push(this.mes[0]);
+            var max = this.mes.length/3;
+            var that = this;
+            let mesTimer = setInterval(function(){
+                num++;
+                if(num>=max){
+                    num = 0;
+                }
+                that.ul_top = num*1.76;
+            },3000);
         }
-        move();
     }
 }
 </script>
@@ -41,7 +57,7 @@ export default {
 
 <style lang="scss" scoped>
 .title{
-    height: 1.733333rem;
+    height: 1.76rem;
     width: 100%;
     display: flex;
     // background: lemonchiffon;
@@ -50,7 +66,7 @@ export default {
         width: 2.186667rem;
         // background: lightcoral;
         img{
-            width: 1.733333rem;
+            width: 1.76rem;
             margin-top: .133333rem;
         }
         div{
@@ -71,14 +87,16 @@ export default {
             height: 5.2rem;
             position: absolute;
             left: 0;
-            top: 0;
+            transition: top .5s;
             li{
-                line-height: .866667rem;
+                line-height: .586667rem;
+                height: .586667rem;
                 text-align: left;
                 // list-style: disc;
                 margin-left: .533333rem;
                 font-weight: bold;
-                font-size: .373333rem;
+                font-size: .32rem;
+                color: #666;
                 span{
                     display: inline-block;
                     border-radius: 50%;
@@ -88,6 +106,7 @@ export default {
                 }
             }
         }
+        .anima{transition: top .5s;}
     }
 }
 </style>
