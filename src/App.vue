@@ -6,6 +6,12 @@
 
 <script>
 // import Home from './pages/Home.vue'
+import Vue from 'vue';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+// ElementUI以插件的形式来扩展Vue的功能
+Vue.use(ElementUI);
+
 
 export default {
   name: 'app'
