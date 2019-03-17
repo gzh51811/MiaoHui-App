@@ -5,7 +5,15 @@
 </template>
 
 <script>
-// import Home from './pages/Home.vue'
+import Vue from 'vue';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+//ElementUI以插件的形式来扩展vue的功能
+
+import axios from 'axios';
+Vue.use(ElementUI);
+
+Vue.prototype.$axios = axios;
 
 export default {
   name: 'app'
@@ -28,7 +36,7 @@ html,body{
 }
 
 
-ul li {
+ul,li {
   list-style: none;
 }
 </style>
