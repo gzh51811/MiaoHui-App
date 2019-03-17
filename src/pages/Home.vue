@@ -1,4 +1,5 @@
 <template>
+<div>
     <div class="box">
         <router-view></router-view>
         <div class="footer">
@@ -39,6 +40,7 @@
             </ul>
         </div>
     </div>
+</div>
 </template>
 
 <script>
@@ -65,10 +67,10 @@ export default {
     },
     watch:{
         //监听路由跳转，改变nowRouter
-        $route(to,from){
+        $route(to){
             // console.log('watch:',to,from)
             this.nowRouter = to.name;
-            console.log(this.nowRouter);
+            // console.log(this.nowRouter);
         }
     },
     mounted(){
@@ -97,8 +99,11 @@ export default {
     flex-direction: column;
     overflow: auto;
 }
+
 .footer{
     height: 1.6rem;
+    position: fixed;
+    bottom: 0;
     width: 100%;
     background: #353638;
     color: rgb(201, 200, 200);

@@ -1,4 +1,5 @@
 <template>
+<div>
     <div class="title">
         <div class="title_pic">
             <img src="../assets/image/wheel_miaoyulianzhu.png" alt="">
@@ -9,7 +10,7 @@
                 <li v-for="(m,index) in mes" :key="index"><span></span>{{m.con}}</li>
             </ul>
         </div>
-    </div>
+    </div></div>
 </template>
 
 
@@ -42,7 +43,7 @@ export default {
             // this.mes.push(this.mes[0]);
             var max = this.mes.length/3;
             var that = this;
-            let mesTimer = setInterval(function(){
+            setInterval(function(){
                 num++;
                 if(num>=max){
                     num = 0;
@@ -56,14 +57,16 @@ export default {
 
 
 <style lang="scss" scoped>
-.title{
+ .title{
     height: 1.76rem;
     width: 100%;
     display: flex;
     // background: lemonchiffon;
     border-top: 1px solid #ccc;
-    .title_pic{
+    overflow: hidden;
+   .title_pic{
         width: 2.186667rem;
+        height: 100%;
         // background: lightcoral;
         img{
             width: 1.76rem;
