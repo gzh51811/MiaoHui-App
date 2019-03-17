@@ -8,13 +8,21 @@
             <h1>登录</h1>
         </div>
         <div class="login_from">
-            <ul class="m-tab">
-                <li v-for="page in pages" @click="currentPage=page" :key="page">{{page}}</li>
-            </ul>
+            <!-- <ul class="m-tab">
+                <li v-for="page in pages" @click="currentPage=page.component" :key="page.title">{{page.title}}</li>
+            </ul> -->
             <!-- 动态组件 -->
-            <keep-alive include="loginGeneral">
+            <!-- <keep-alive include="loginGeneral">
                 <component :is="currentPage"></component>
-            </keep-alive>
+            </keep-alive> -->
+            <el-tabs v-model="activeName"                       @tab-click="handleClick">
+                <el-tab-pane label="账号登录" name="loginGeneral">
+                    <loginGeneral />
+                </el-tab-pane>
+                <el-tab-pane label="新用户注册" name="loginTel">
+                    <loginTel />
+                </el-tab-pane>
+            </el-tabs>
         </div>
         <!-- <loginGeneral>普通登录</loginGeneral>
         <loginTel>手机动态验证码登录</loginTel> -->
@@ -28,18 +36,49 @@ import loginGeneral from "../components/Login_general.vue";
 export default {
     data(){
         return {
-            pages:['loginGeneral','loginTel'],
+            activeName: 'loginGeneral',
+            pages:[
+                {
+                    title:'账号登录',
+                    component:'loginGeneral'
+                },
+                {
+                    title:'新用户注册',
+                    component:'loginTel'
+                },
+            ],
             currentPage:'loginGeneral'
         }
     },
     components:{
         loginGeneral,
         loginTel
+    },
+    methods: {
+      handleClick(tab, event) {
+        // console.log(tab, event);
+      }
     }
 }
 </script>
 
 <style scoped lang="scss">
+    #login{
+        /deep/ .el-tabs__nav{
+            // width: 100% !important;
+            // position: absolute;
+            transform:translate(-50%,0) !important;
+            left: 50%;
+            right: 50%;
+        }
+        /deep/ .el-tabs__item:hover,/deep/ .el-tabs__item.is-active {
+            color: #E6A23C;
+        }
+        /deep/ .el-tabs__active-bar {
+            background-color: #E6A23C;
+        }
+        
+    }
     .top{
         height:.986667rem;
         background-color: #232425 !important;
