@@ -29,12 +29,6 @@
                         <img :src="nav.icon1">
                         <p>{{nav.name}}</p>
                     </div>
-                        <!-- <span class="active" v-else-if="nowRouter === 'Home_article' && nav.name === '妙语连珠'"><img :src="nav.icon2" class="active"></span>
-                        <span class="active" v-else-if="nowRouter === 'Home_theme' && nav.name === '专题'"><img :src="nav.icon2" class="active"></span>
-                        <span class="active" v-else-if="nowRouter === 'Home_cart' && nav.name === '购物车'"><img :src="nav.icon2" class="active"></span>
-                        <span class="active" v-else-if="nowRouter === 'Home_mine' && nav.name === '个人中心'"><img :src="nav.icon2" class="active"></span>
-                        <span v-else><img :src="nav.icon1"></span>
-                        <p>{{nav.name}}</p> -->
                     
                 </li>
             </ul>
@@ -133,7 +127,7 @@ export default {
                 }
             }
             .active{background: #20210f;}
-            .active~p{
+            .active p{
                 color: rgb(207, 142, 20);
             }
         }
