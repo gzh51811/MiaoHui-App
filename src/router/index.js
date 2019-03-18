@@ -66,9 +66,9 @@ let router = new VueRouter({
                 name:'Home_cart',
                 path:'/home/cart',
                 component:Home_cart,
-                meta: { 
-                    requiresAuth: true 
-                }
+                // meta: { 
+                //     requiresAuth: true 
+                // }
             },{
                 name:'Home_theme',
                 path:'/home/theme',

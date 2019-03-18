@@ -32,8 +32,27 @@ const store = new Vuex.Store({
             title:'Home_mine',
             icon1:require('../assets/image/user.png'),
             icon2:require('../assets/image/user-selected.png')
+        }],
+        cartList:[{
+            good_id : "8008",
+            user_id : 1,
+            img_cover : require("../assets/image/1402_L_1502706636033.jpg"),
+            good_name : "【对面】Led化妆镜子台灯|公主专属",
+            now_price : "108.40",
+            style : "女生款",
+            adding_time : "1552832990130",
+            nums : 6
+        },
+        {
+            good_id : "8009",
+            user_id : 1,
+            img_cover : require("../assets/image/1453_thumb_G_1548725455338.jpg"),
+            good_name : "【九猪】USB充电发热蒸汽眼罩|去黑眼圈",
+            now_price : "108.00",
+            style : "女生款",
+            adding_time : "1552832990130",
+            nums : 7
         }]
-        
     },
     mutations:{
         jump(){
