@@ -76,14 +76,21 @@ export default {
             this.$refs.ruleForm.validate((valid) => {
                 if (valid) {  
                     let param = {"username":this.ruleForm.username,"password":this.ruleForm.password};
-
-                    this.$ajax.post("http://localhost:12580/login", this.$qs.stringify(param))
+                    console.log(param);
+                    this.$axios.post("http://localhost:12580/login", this.$qs.stringify(param))
                         //成功返回
                         .then(response => {
-                            console.log(response);
-                            localStorage.setItem('username',JSON.stringify(response.data.username));
-                            sessionStorage.setItem('username',JSON.stringify(response.data.username));
-                            location.href = '/Home';
+                            if(response.data.code === 200){
+                                localStorage.setItem('username',JSON.stringify(response.data.username));
+                                sessionStorage.setItem('username',JSON.stringify(response.data.username));
+                                localStorage.setItem('id',JSON.stringify(response.data._id));
+                                sessionStorage.setItem('id',JSON.stringify(response.data._id));
+                            // location.href = '/Home';
+                            }else {
+                                alert("登录失败")
+                            }
+                            // console.log(response);
+                            
                         })
                         //失败返回
                         .catch(error => {

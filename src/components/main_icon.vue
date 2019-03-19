@@ -2,7 +2,7 @@
     <div>
         <div class="icon_box">
             <ul class="icon_ul">
-                <li v-for="item in icons" :key="item.title">
+                <li v-for="item in icons" :key="item.title" @click="goto(item.title)">
                     <img :src="item.url">
                     <p>{{item.title}}</p>
                 </li>
@@ -54,7 +54,13 @@ export default {
         }
     },
     methods:{
-        
+         goto(category){
+            console.log(category)
+        // params传参，不支持path跳转
+            this.$router.push({name:'List',query:{'category':category},params:{'category':category}})
+        //   this.$router.push({path:'/goods/'+id})
+        //   this.$router.push({'/goods/'+id)
+      }
     }
 }
 </script>

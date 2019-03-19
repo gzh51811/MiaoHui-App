@@ -1,40 +1,40 @@
 <template>
     <div class="liebiao">
         <div class="lbtou">
-            <span class="houtui">   </span>
-            所有商品
+            <span class="houtui" @click="backpages">   </span>
+            {{title.category}}
         </div>
         <div class="wenzhang">
-            <div class="wz_1">
-                <img ref="elememt" src="../assets/image/1551165706653559302.jpg" alt="">
+            <div class="wz_1" v-for="good in goodslist" :key="good.good_id" @click="goto(good.good_id)">
+                <img ref="elememt" :src="good.img_cover" alt="">
+                <div class="youshang"><span class="liulan">{{good.record}}</span>次浏览</div>
+                <p class="spmc">{{good.good_name}}</p>
+                <p>￥<span class="jiage">{{good.now_price}}</span><span class="taoyan">{{good.cai}}</span><span class="xihuan">{{good.zan}}</span></p>
+            </div>
+            <!-- <div class="wz_1">
+                <img ref="elememt" src="../assets/image/1524_L_1551322215078.jpg" alt="">
                 <div class="youshang"><span class="liulan">26</span>次浏览</div>
                 <p class="spmc">【Robotime若态】手工DIY拼图-花盆款</p>
                 <p>￥<span class="jiage">104.00</span><span class="taoyan">0</span><span class="xihuan">3</span></p>
             </div>
             <div class="wz_1">
-                <img ref="elememt" src="../assets/image/1551165706653559302.jpg" alt="">
+                <img ref="elememt" src="../assets/image/1528_L_1552362608549.jpg" alt="">
                 <div class="youshang"><span class="liulan">26</span>次浏览</div>
                 <p class="spmc">【Robotime若态】手工DIY拼图-花盆款</p>
                 <p>￥<span class="jiage">104.00</span><span class="taoyan">0</span><span class="xihuan">3</span></p>
             </div>
             <div class="wz_1">
-                <img ref="elememt" src="../assets/image/1551165706653559302.jpg" alt="">
+                <img ref="elememt" src="../assets/image/1488_L_1539065503706.jpg" alt="">
                 <div class="youshang"><span class="liulan">26</span>次浏览</div>
                 <p class="spmc">【Robotime若态】手工DIY拼图-花盆款</p>
                 <p>￥<span class="jiage">104.00</span><span class="taoyan">0</span><span class="xihuan">3</span></p>
             </div>
             <div class="wz_1">
-                <img ref="elememt" src="../assets/image/1551165706653559302.jpg" alt="">
+                <img ref="elememt" src="../assets/image/1469_L_1520416031419.jpg" alt="">
                 <div class="youshang"><span class="liulan">26</span>次浏览</div>
                 <p class="spmc">【Robotime若态】手工DIY拼图-花盆款</p>
                 <p>￥<span class="jiage">104.00</span><span class="taoyan">0</span><span class="xihuan">3</span></p>
-            </div>
-            <div class="wz_1">
-                <img ref="elememt" src="../assets/image/1551165706653559302.jpg" alt="">
-                <div class="youshang"><span class="liulan">26</span>次浏览</div>
-                <p class="spmc">【Robotime若态】手工DIY拼图-花盆款</p>
-                <p>￥<span class="jiage">104.00</span><span class="taoyan">0</span><span class="xihuan">3</span></p>
-            </div>
+            </div> -->
         </div>
         
         
@@ -42,7 +42,49 @@
 </template>
 <script>
 export default {
-    
+    data(){
+        return {
+            goodslist:[],
+            title:{}
+        };
+    },
+    created(){
+        let {category:category} = this.$route.params;
+        console.log(category);
+        this.title = {category:category}
+        this.$axios
+        .get("http://localhost:12580/goodslist", {
+            params: {
+                "page": 1,
+                "limit": 20
+            }
+        })
+        .then(res => {
+            // console.log(res);
+            let data = res.data.data;
+            for(var i= 0;i < data.length;i++){
+                // console.log(data[i].img_cover)
+                data[i].img_cover = require('../assets/image/' +data[i].img_cover);
+                // data[i].img_cover = './src/assets/image/' +data[i].img_cover;
+            }
+            this.goodslist = data;
+            console.log(data);
+        });
+    },
+    methods:{
+        goto(id){
+            // console.log(good_id)
+      // params传参，不支持path跳转
+            let category = this.title.category;
+            console.log(category);
+            this.$router.push({name:'Detail_goods',query:{id},params:{id:id,category:category}})
+        //   this.$router.push({path:'/goods/'+id})
+        //   this.$router.push({'/goods/'+id)
+      },
+      backpages(){
+          this.$router.push({name:'Home'})
+      }
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -80,14 +122,15 @@ export default {
             flex-direction: column;
             .wz_1{
                 width: 100%;
-                height: 315px;
+                // height: 415px;
                 position: relative;
                 img{
                     width: 100%;
                 }
                 .youshang{
-                    width: 60px;
+                    // width: 60px;
                     height: 18px;
+                    padding: 0 2px;
                     font-size: 8px;
                     background: hsla(0, 0%, 0%, 0.664);
                     border: 2px solid rgb(100, 100, 100);
@@ -110,7 +153,7 @@ export default {
                         display: block;
                         width: 30px;
                         padding-left: 30px;
-                        background: url(../assets/image/like_gray.png) no-repeat;
+                        background: url(../assets/image/like_gray.png) no-repeat left center;
                         background-size: 25px 25px;
                     }
                     .taoyan{
@@ -119,7 +162,7 @@ export default {
                         display: block;
                         width: 30px;
                         padding-left: 30px;
-                        background: url(../assets/image/dislike_gray.png) no-repeat;
+                        background: url(../assets/image/dislike_gray.png) no-repeat left center;
                         background-size: 25px 25px;
                     }
                 }
