@@ -83,6 +83,8 @@ export default {
                             if(response.data.code === 200){
                                 localStorage.setItem('username',JSON.stringify(response.data.username));
                                 sessionStorage.setItem('username',JSON.stringify(response.data.username));
+                                localStorage.setItem('id',JSON.stringify(response.data._id));
+                                sessionStorage.setItem('id',JSON.stringify(response.data._id));
                             // location.href = '/Home';
                             }else {
                                 alert("登录失败")
