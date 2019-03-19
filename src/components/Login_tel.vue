@@ -2,15 +2,8 @@
     <div class="Login_tel">
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="0" class="demo-ruleForm">
             <el-form-item  prop="username">
-                <el-input v-model.number="ruleForm.username" @blur="verification"  placeholder="输入用户名"></el-input>
+                <el-input v-model="ruleForm.username" ref="input1"  placeholder="输入用户名"></el-input>
             </el-form-item>
-            <!-- <el-form-item  prop="validCode">
-                <el-input type="text" class="validCode" v-model="ruleForm.validCode" autocomplete="off"  placeholder="输入短信验证码" ></el-input>
-                <el-button class="Fyzm">发送验证码</el-button>
-            </el-form-item>
-            <el-form-item  prop="RecommendCode">
-                <el-input type="text" v-model="ruleForm.RecommendCode" autocomplete="off" placeholder="妙汇推荐码（选填）" class="RecommendCode"></el-input>
-            </el-form-item> -->
             <el-form-item prop="pass">
                 <el-input type="password"  placeholder="密码" v-model="ruleForm.pass" autocomplete="off"></el-input>
             </el-form-item>
@@ -33,11 +26,25 @@ export default {
             //     return callback(new Error('用户名必须为6位字符'))
             // }
             // setTimeout(() => {
-                callback();
+            // callback();
                 // console.log(666);
-                (function (username) {
-                    console.log(value);
-                })(value)
+            this.$axios
+                .get("http://localhost:12580/register/verification", {
+                    params: {
+                        "username": value
+                    }
+                })
+                .then(res => {
+                    console.log(res);
+                    if(res.data.code == 100){
+                        callback();
+                    }else {
+                        alert('用户名已存在');
+                        return;
+                    }
+                    
+                });
+            
             // }, 1000);
         };
 
@@ -86,16 +93,24 @@ export default {
         register(){
             this.$refs.ruleForm.validate((valid) => {
                 if (valid) {
-                    // 保存用户名密
-                    // localStorage.setItem('username',this.ruleForm.username);
-
-                    // this.$router.push('/home');
-                    // if(this.$route.params.from){
-                    //     this.$router.push(this.$route.params.from);
-                    // }else{
-                    //     this.$router.push('/Home');
-                    // }
-
+                    let param = {"username":this.ruleForm.username,"password":this.ruleForm.pass};
+                    this.$axios.post("http://localhost:12580/register", this.$qs.stringify(param))
+                    //成功返回
+                    .then(response => {
+                        console.log(response);// 后台返回数据
+                        if(response.data.code == 200){
+                            localStorage.setItem('username',this.ruleForm.username);
+                            sessionStorage.setItem('username',this.ruleForm.username);
+                            // location.href = '/Home';
+                        }else {
+                            alert('注册失败');
+                            // return;
+                        }
+                    })
+                    //失败返回
+                    .catch(error => {
+                        console.log(error);
+                    })
 
                 } else {
                     return false;
@@ -103,35 +118,32 @@ export default {
             });
         },
         // 验证用户名
-        verification(){
-            this.$refs.ruleForm.validate((valid) => {
-                if (valid) {
-                    // 保存用户名密
-                    // localStorage.setItem('username',this.ruleForm.username);
-                    console.log(this.ruleForm.username);
-                    // this.$router.push('/home');
-                    // if(this.$route.params.from){
-                    //     this.$router.push(this.$route.params.from);
-                    // }else{
-                    //     this.$router.push('/Home');
-                    // }
+        // verification(){
+        //     this.$refs.ruleForm.validate((valid) => {
 
+        //         // if (valid) {
+        //             var username = this.ruleForm.username;
+                    
+        //             this.$axios
+        //                 .get("http://localhost:12580/register/verification", {
+        //                     params: {
+        //                         "username": username
+        //                     }
+        //                 })
+        //                 .then(res => {
+        //                     console.log(res);
+        //                     if(res.data.code == 100){
 
-                } else {
-                    return false;
-                }
-            });
-        }
-        // submitForm(formName) {
-        //     this.$refs[formName].validate((valid) => {
-        //     if (valid) {
-        //         alert('submit!');
-        //     } else {
-        //         console.log('error submit!!');
-        //         return false;
-        //     }
+        //                     }
+                            
+        //                 });
+
+        //         // } else {
+        //         //     return false;
+        //         // }
         //     });
-        // },
+        // }
+       
     }   
 }
 </script>
