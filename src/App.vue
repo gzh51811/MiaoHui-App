@@ -11,6 +11,11 @@ import 'element-ui/lib/theme-chalk/index.css';
 //ElementUI以插件的形式来扩展vue的功能
 
 import axios from 'axios';
+
+//弹窗
+// import {MessageBox} from 'mint-ui';
+// Vue.prototype.$messagebox = MessageBox;
+
 Vue.use(ElementUI);
 
 Vue.prototype.$axios = axios;

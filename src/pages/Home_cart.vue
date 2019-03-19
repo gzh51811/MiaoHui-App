@@ -15,7 +15,7 @@
                 <ul>
                     <li v-for="(list,index) in cartList" :key="list.good_id">
                         <div class="checkbox">
-                            <input type="checkbox" v-model="selected" :value="index" @click="select(index)"><label for=""></label>
+                            <input type="checkbox" v-model="selected" :value="list.good_id" @click="select(list.good_id)"><label for=""></label>
                         </div>
                         <div class="imgbox"><img :src="list.img_cover" alt=""></div>
                         <div class="messbox">
@@ -26,7 +26,7 @@
                                 <span @click="cutnum(index)">-</span>
                                 <span>{{list.nums}}</span>
                                 <span @click="addnum(index)">+</span>
-                                <span><img src="../assets/image/delete_cart.png" @click="deleteOne(index)"></span>
+                                <span><img src="../assets/image/delete_cart.png" @click="deleteOne(list.good_id)"></span>
                             </div>
                         </div>
                     </li>
@@ -38,10 +38,10 @@
                     <input type="checkbox" v-model="checkAll"><label for=""></label>
                 </div>
                 <div class="total_price" v-if="edit">总价：￥{{price}}</div>
-                <div class="pay" v-if="edit">去结算(6)</div>
+                <div class="pay" v-if="edit" :class="{payActive:selected.length>0}">去结算({{selected.length}})</div>
                 <div v-else>
-                    <div class="collect bom">移入收藏</div>
-                    <div class="deleteCheck bom">删除</div>
+                    <!-- <div class="collect bom">移入收藏</div> -->
+                    <div class="deleteCheck bom" @click="deleteSelected">删除</div>
                 </div>
             </div>
         </div>
@@ -54,23 +54,38 @@ export default {
         return {
             cartNum:1,
             cartList:[],
-            edit:false,
+            edit:true,
             selected:[],
-            price:0
+            price:0,
         }
     },
     created(){
+        // this.$store.dispatch("getCartData","3d");
+        //购物车数据
+        let param = { 'user_id': "5c8b9c9a5308f6d83c1667ae" };
+        this.$axios.post("http://localhost:12580/cart/list", this.$qs.stringify(param))
+        .then(response => {
+            // console.log(response);// 后台返回数据
+            let data = response.data.data;
+            // console.log(data)
+            for(let i=0; i<data.length; i++){
+                data[i].img_cover = require('../assets/image/'+data[i].img_cover);
+            }
+            this.cartList = data;
+            this.cartNum = data.length;
+        });
+
         this.cartList = this.$store.state.cartList;
-        console.log(this.cartList);
+        // console.log(this.cartList);
         this.totalPrice();
     },
     computed:{
         checkAll:{
             get(){
-                return this.cartList.every((list,index)=>this.selected.includes(index));
+                return this.cartList.every((list)=>this.selected.includes(list.good_id)) && this.cartList.length>0;
             },
             set(checked){
-                this.selected = checked ? this.cartList.map((list,idx)=>idx) : [];
+                this.selected = checked ? this.cartList.map((list)=>list.good_id) : [];
                 this.totalPrice();
             }
             
@@ -91,6 +106,16 @@ export default {
             if(this.cartList[idx].nums>1){
                 this.cartList[idx].nums--;
                 //axios
+                let param = {"good_id":this.cartList[idx].good_id,"user_id":this.cartList[idx].user_id};
+                this.$axios.post("http://localhost:12580/cart/reduce", this.$qs.stringify(param))
+                //成功返回
+                .then(response => {
+                    console.log(response);// 后台返回数据
+                })
+                //失败返回
+                .catch(error => {
+                    console.log(error);
+                })
                 this.totalPrice();
             }
         },
@@ -98,28 +123,97 @@ export default {
         addnum(idx){
             this.cartList[idx].nums++;
             this.totalPrice();
+            let param = {"good_id":this.cartList[idx].good_id,"user_id":this.cartList[idx].user_id};
+            this.$axios.post("http://localhost:12580/cart/add", this.$qs.stringify(param))
+            //成功返回
+            .then(response => {
+                console.log(response);// 后台返回数据
+            })
+            //失败返回
+            .catch(error => {
+                console.log(error);
+            })
         },
         //勾选
-        select(idx){
-            let index = this.selected.indexOf(idx);
+        select(id){
+            let index = this.selected.indexOf(id);
             if(index>=0){
                 this.selected.splice(index,1);
             }else{
-                this.selected.push(idx);
+                this.selected.push(id);
             }
             this.totalPrice();
         },
         //删除单项
-        deleteOne(idx){
-            let good_id = this.cartList[idx].good_id;
-            console.log(good_id);
-            this.cartList.splice(idx,1);
+        deleteOne(id){
+            // this.$messagebox.confirm('确认删除好货吗').then(action=>{
+                // let good_id = this.cartList[id].good_id;
+                // console.log(good_id);
+                for(var i=0;i<this.cartList.length;i++){
+                    if(this.cartList[i].good_id === id){
+                        break;
+                    }
+                }
+                
+                //axios
+                let param = {"good_id":id,"user_id":this.cartList[i].user_id};
+                this.$axios.post("http://localhost:12580/cart/delete", this.$qs.stringify(param))
+                //成功返回
+                .then(response => {
+                    console.log(response);// 后台返回数据
+                })
+                //失败返回
+                .catch(error => {
+                    console.log(error);
+                })
+
+                this.cartNum--;
+                this.cartList.splice(i,1);
+
+                let index = this.selected.indexOf(id);
+                if(index>=0){
+                    this.selected.splice(index,1);
+                }
+                this.totalPrice();
+
+                this.$store.commit('removeGoods',id);
+                this.$forceUpdate();
+            // }   
+        },
+
+        //删除选中
+        deleteSelected(){
+            this.selected.map((item)=>{
+                // totalprice += this.cartList[item].now_price * this.cartList[item].nums;
+                for(var i=0;i<this.cartList.length;i++){
+                    if(this.cartList[i].good_id === item){
+                        break;
+                    }
+                }
+                this.$store.commit('removeGoods',this.cartList[i].good_id);
+                let param = {"good_id":this.cartList[i].good_id,"user_id":this.cartList[i].user_id};
+                this.$axios.post("http://localhost:12580/cart/delete", this.$qs.stringify(param))
+                //成功返回
+                .then(response => {
+                    console.log(response);// 后台返回数据
+                })
+                this.cartList.splice(i,1);
+                
+            });
+            this.selected = [];
+            this.totalPrice();
         },
         //计算价格
         totalPrice(){
             let totalprice = 0;
-            this.selected.map((item,index)=>{
-                totalprice += this.cartList[item].now_price * this.cartList[item].nums;
+            this.selected.map((item)=>{
+                // totalprice += this.cartList[item].now_price * this.cartList[item].nums;
+                for(var i=0;i<this.cartList.length;i++){
+                    if(this.cartList[i].good_id === item){
+                        break;
+                    }
+                }
+                totalprice += this.cartList[i].now_price * this.cartList[i].nums;
             });
             totalprice = totalprice.toFixed(2);
             // console.log(totalprice);
@@ -152,7 +246,7 @@ export default {
     flex: 1;
     // background: lemonchiffon;
     padding-bottom: 2.933333rem;
-    overflow: auto;
+    // overflow: auto;
     color: #666;
     .cartNone{
         display: flex;
@@ -181,6 +275,8 @@ export default {
     }
     .cart_goods{
         width: 100%;
+        height: 100%;
+        overflow: auto;
         ul{
             width: 100%;
             li{
@@ -286,12 +382,15 @@ export default {
         .pay{
             height: .906667rem;
             width: 2.4rem;
-            background: #ffbd1f;
+            background: #666;
             position: absolute;
             top: .213333rem;
             right: .4rem;
             border-radius: .16rem;
             line-height: .906667rem;
+        }
+        .payActive{
+            background: #ffbd1f;
         }
         .bom{
             position: absolute;

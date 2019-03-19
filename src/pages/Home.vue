@@ -20,6 +20,7 @@
                     <div class="active" v-else-if="nowRouter === 'Home_cart' && nav.name === '购物车'">
                         <img :src="nav.icon2">
                         <p>{{nav.name}}</p>
+                        <div class="C_num" v-if="nav.name === '购物车'">{{goodsQty}}</div>
                     </div>
                     <div class="active" v-else-if="nowRouter === 'Home_mine' && nav.name === '个人中心'">
                         <img :src="nav.icon2">
@@ -28,6 +29,7 @@
                     <div v-else>
                         <img :src="nav.icon1">
                         <p>{{nav.name}}</p>
+                        <div class="C_num" v-if="nav.name === '购物车'">{{goodsQty}}</div>
                     </div>
                     
                 </li>
@@ -45,7 +47,8 @@ export default {
             //底部导航栏数据
             navs:[],
             //当前路由
-            nowRouter:''
+            nowRouter:'',
+            Cnum:0
         }
     },
     methods:{
@@ -57,6 +60,10 @@ export default {
         //初始化获取路由信息
         getRouter(){
             this.nowRouter = this.$route.name;
+        },
+        //获取购物车数量
+        getCartNum(){
+            this.Cnum = this.$store.state.cartList.length;
         }
     },
     watch:{
@@ -64,17 +71,25 @@ export default {
         $route(to){
             // console.log('watch:',to,from)
             this.nowRouter = to.name;
+            
             // console.log(this.nowRouter);
         }
     },
     mounted(){
         // console.log(this)
+        // this.Cnum =  this.$store.state.cartList.length;
     },
-    created(){
+    computed:{
+        goodsQty(){
+            return this.$store.state.cartList.length;
+        }
+    },
+    async created(){
         this.navs = this.$store.state.navs;
         // console.log(this.navs);
         this.getRouter();
-
+        // this.Cnum = this.$store.state.cartList.length;
+        await this.$store.dispatch("getCartData","5c8b9c9a5308f6d83c1667ae");
     }
 }
 </script>
@@ -111,6 +126,7 @@ export default {
             justify-content: center;
             font-weight: bold;
             font-size: .373333rem;
+            position: relative;
             div{
                 width: 100%;
                 height: 100%; 
@@ -124,6 +140,16 @@ export default {
                 }
                 p{
                     margin-top: .04rem;
+                }
+                .C_num{
+                    position: absolute;
+                    top: .053333rem;
+                    right: .24rem;
+                    width: .533333rem;
+                    height: .533333rem;
+                    background: #ffbd1f;
+                    color: #fff;
+                    border-radius: 50%;
                 }
             }
             .active{background: #20210f;}
