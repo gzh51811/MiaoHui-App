@@ -1,11 +1,11 @@
 <template>
     <div class="liebiao">
         <div class="lbtou">
-            <span class="houtui">   </span>
-            所有商品
+            <span class="houtui" @click="backpages">   </span>
+            {{title.category}}
         </div>
         <div class="wenzhang">
-            <div class="wz_1" v-for="good in goodslist" :key="good.good_id">
+            <div class="wz_1" v-for="good in goodslist" :key="good.good_id" @click="goto(good.good_id)">
                 <img ref="elememt" :src="good.img_cover" alt="">
                 <div class="youshang"><span class="liulan">{{good.record}}</span>次浏览</div>
                 <p class="spmc">{{good.good_name}}</p>
@@ -44,10 +44,14 @@
 export default {
     data(){
         return {
-            goodslist:[]
+            goodslist:[],
+            title:{}
         };
     },
     created(){
+        let {category:category} = this.$route.params;
+        console.log(category);
+        this.title = {category:category}
         this.$axios
         .get("http://localhost:12580/goodslist", {
             params: {
@@ -56,16 +60,30 @@ export default {
             }
         })
         .then(res => {
-            console.log(res);
+            // console.log(res);
             let data = res.data.data;
             for(var i= 0;i < data.length;i++){
-                console.log(data[i].img_cover)
+                // console.log(data[i].img_cover)
                 data[i].img_cover = require('../assets/image/' +data[i].img_cover);
                 // data[i].img_cover = './src/assets/image/' +data[i].img_cover;
             }
             this.goodslist = data;
             console.log(data);
         });
+    },
+    methods:{
+        goto(id){
+            // console.log(good_id)
+      // params传参，不支持path跳转
+            let category = this.title.category;
+            console.log(category);
+            this.$router.push({name:'Detail_goods',query:{id},params:{id:id,category:category}})
+        //   this.$router.push({path:'/goods/'+id})
+        //   this.$router.push({'/goods/'+id)
+      },
+      backpages(){
+          this.$router.push({name:'Home'})
+      }
     }
 }
 </script>
@@ -135,7 +153,7 @@ export default {
                         display: block;
                         width: 30px;
                         padding-left: 30px;
-                        background: url(../assets/image/like_gray.png) no-repeat;
+                        background: url(../assets/image/like_gray.png) no-repeat left center;
                         background-size: 25px 25px;
                     }
                     .taoyan{
@@ -144,7 +162,7 @@ export default {
                         display: block;
                         width: 30px;
                         padding-left: 30px;
-                        background: url(../assets/image/dislike_gray.png) no-repeat;
+                        background: url(../assets/image/dislike_gray.png) no-repeat left center;
                         background-size: 25px 25px;
                     }
                 }

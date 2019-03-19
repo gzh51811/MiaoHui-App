@@ -26,23 +26,31 @@
                 </a> 
             </li>
             <!-- <a class="backpages"  href="http://element.eleme.io/#/zh-CN/component/notification">取消</a> -->
-            <!-- <p class="backpages" @click="backpages">取消</p> -->
+           
         </ul>
-        <div class="backpages"><a class="backpages" href="javascript:history.go(-1)">取消</a></div>
+        <!-- <div class="backpages"><a class="backpages" href="javascript:history.go(-1)">取消</a></div> -->
         <!-- <a class="backpages" href="javascript:history.go(-1)">取消</a> -->
+        <p class="backpages" @click="backpages">取消</p>
         
     </div>
 </template>
 <script>
 export default {
-    // data(){
-    //     return {}
-    // },
-    // methods:{
-    //     backpages(){
-    //         this.$router.push({name:'Detail_goods'})
-    //     }
-    // }
+    data(){
+        return {
+            good_id:''
+        }
+    },
+    created(){
+        let {id:good_id} = this.$route.params;
+        this.good_id = good_id;
+    },
+    methods:{
+        backpages(){
+            let id = this.good_id;
+            this.$router.push({name:'Detail_goods',query:{id},params:{id}})
+        }
+    }
 }
 </script>
 <style scoped lang="scss">

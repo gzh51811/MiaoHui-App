@@ -1,6 +1,6 @@
 <template>
     <div class="goods">
-        <img :src="require('../assets/image/product_back.png')" class="pageBack ui-link"  href="javascript:history.go(-1)" @click="mpageBack" />
+        <img :src="require('../assets/image/product_back.png')" class="pageBack ui-link"  @click="mpageBack" />
         <div class="product-share">
             <img :src="require('../assets/image/share_product.png')" @click="share_product" />
         </div>
@@ -40,7 +40,7 @@
                     <a href="" class="buyNow" @onclick="buyNow">立即购买</a>
                 </li>
                 <li class="addCart">
-                    <a href="" @onclick="product_to_cart">加入购物车</a>
+                    <a @onclick="product_to_cart">加入购物车</a>
                 </li>
             </ul>
         </div>
@@ -51,8 +51,9 @@
 export default {
     data(){
         return {
-             goodsinfo:{},
-             goodsimg:[]
+            goodsinfo:{},
+            goodsimg:[],
+            title:{}
         }
     },
     watch:{
@@ -65,16 +66,13 @@ export default {
     methods:{
         async getData(){
             // 如何获取id
-            // let {id:goods_id} = this.$route.params;
-
-            let good_id = "8001";
+            let {id:good_id} = this.$route.params;
             let {data:{data}} = await this.$axios
                 .get("http://localhost:12580/goodslist/details", {
                     params: {
-                        "good_id": good_id
+                        good_id
                     }
                 })
-            console.log(data[0]);
             var goodsdata = data[0];
 
             this.goodsinfo = goodsdata;
@@ -84,23 +82,28 @@ export default {
                 imgs.push({img:require('../assets/image/' + goodsdata[img])});
             }
             this.goodsimg = imgs;
-                // console.log(imgs);
 
         },
         mpageBack(){// 上一页面
-
+                let category = this.title.category;
+                this.$router.push({name:'List',query:{category},params:{category}})
         },
         share_product(){ // 分享商品
-            this.$router.push({name:'Detail_share'})
-            // this.$router.push({path:'/detail_goods/share_goods'})
+            let id = this.goodsinfo.good_id;
+            this.$router.push({name:'Detail_share',query:{id},params:{id}})
         },
         product_to_cart(){ // 加入购物车
             // 添加购物车
-            let param = {"good_id":"商品id","user_id":"用户id",style:'女生款'};
-            this.$ajax.post("http://localhost:12580/cart/addcart", this.$qs.stringify(param))
+            let {id:good_id} = this.$route.params;
+            let user_id = localStorage.getItem('id');
+            let param = {"good_id":good_id,"user_id":user_id,style:'女生款'};
+            this.$axios.post("http://localhost:12580/cart/addcart", this.$qs.stringify(param))
             //成功返回
             .then(response => {
-                console.log(response);// 后台返回数据
+                // console.log(response);// 后台返回数据
+                if(response.data.data.ok == 1){
+                    alert("宝贝成功添加购物车")
+                }
             })
             //失败返回
             .catch(error => {
@@ -120,12 +123,13 @@ export default {
 
         // }
     },
-     mounted(){
-        this.getData()
+    created(){
+        let {category:category} = this.$route.params;
+        this.title = {category:category};
 
-        // this.timer = setInterval(()=>{
-        //     console.log('interval')
-        // },2000);
+    },
+    mounted(){
+        this.getData()
     },
 }
 </script>
