@@ -37,12 +37,10 @@
                     </a>
                 </li>
                 <li class="goumai">
-                    <a href="" class="buyNow" @onclick="buyNow">立即购买
-                    </a>
+                    <a href="" class="buyNow" @onclick="buyNow">立即购买</a>
                 </li>
                 <li class="addCart">
-                    <a href="" @onclick="btnAddToCart">加入购物车
-                    </a>
+                    <a href="" @onclick="product_to_cart">加入购物车</a>
                 </li>
             </ul>
         </div>
@@ -88,13 +86,13 @@ export default {
                 // console.log(imgs);
 
         },
-        mpageBack(){
+        mpageBack(){// 上一页面
 
         },
-        share_product(){
+        share_product(){ // 分享商品
 
         },
-        product_to_cart(){
+        product_to_cart(){ // 加入购物车
 
         },
         mechatClick(){ // 联系客服
@@ -106,9 +104,9 @@ export default {
         buyNow(){ // 立即购买
 
         },
-        btnAddToCart(){ // 加入购物车
+        // btnAddToCart(){ // 加入购物车
 
-        }
+        // }
     },
      mounted(){
         this.getData()
@@ -126,7 +124,25 @@ export default {
     //     line-height: 1.3;
     //     font-family: sans-serif;
     // }
+   
     .goods{
+        // el-carousel__indicator is-active
+        /deep/ .is-active button{
+            background-color: #d5342d
+            // padding: 0;
+            // width: .16rem;
+            // height: .16rem;
+            // border-radius: 50%;
+        }
+        /deep/ .el-carousel__indicator{
+            padding: 20px 10px;
+        }
+        /deep/ .el-carousel__button{
+             width: .4rem;
+            height: .4rem;
+            border-radius: 50%;
+            background-color: #333;
+        }
         .pageBack,.product-share img,.product-add-to-cart img{
             display: block;
             position: fixed;
