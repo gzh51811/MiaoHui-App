@@ -62,7 +62,8 @@ export default {
     created(){
         // this.$store.dispatch("getCartData","3d");
         //购物车数据
-        let param = { 'user_id': "5c8b9c9a5308f6d83c1667ae" };
+        let user_id = localStorage.getItem('id');
+        let param = { 'user_id': user_id };
         this.$axios.post("http://localhost:12580/cart/list", this.$qs.stringify(param))
         .then(response => {
             // console.log(response);// 后台返回数据

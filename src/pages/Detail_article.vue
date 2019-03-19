@@ -168,7 +168,7 @@ export default {
                 border-right: 1px solid rgba(211, 197, 197, 0.342);
                 img{
                     width: 25px;
-                    pdadding: 15px 3px 0 0;
+                    // pdadding: 15px 3px 0 0;
                 }
             }
         }

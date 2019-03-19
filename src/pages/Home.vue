@@ -89,7 +89,8 @@ export default {
         // console.log(this.navs);
         this.getRouter();
         // this.Cnum = this.$store.state.cartList.length;
-        await this.$store.dispatch("getCartData","5c8b9c9a5308f6d83c1667ae");
+        let user_id = localStorage.getItem('id');
+        await this.$store.dispatch("getCartData",user_id);
     }
 }
 </script>
