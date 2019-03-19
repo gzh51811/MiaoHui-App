@@ -4,16 +4,16 @@
             专题
         </div>
         <div class="wenzhang">
-            <div class="wz_1">
-                <img ref="elememt" src="../assets/image/1551852339555646380.jpg" alt="">
-                <div class="wz_s1">
+            <div class="wz_1" v-for="(good,index) in goodslist" :key="good._id">
+                <img ref="elememt" :src="good.img" alt="" >
+                <div class="wz_s1" @click="tiaozhuan(good.uid)" :data-id="index">
                     <div>
-                        <a href="#" class="biaoti">女神节送什么最讨欢心</a>
-                        <a href="#" class="yuedu"><span>59</span>次阅读</a>
+                        <a href="#" class="biaoti">{{good.special}}</a>
+                        <a href="#" class="yuedu"><span>{{good.Read}}</span>次阅读</a>
                     </div>
                 </div>
             </div>
-            <div class="wz_1">
+            <!-- <div class="wz_1">
                 <img ref="elememt" src="../assets/image/1550029261617596764.jpg" alt="">
                 <div class="wz_s1">
                     <div>
@@ -57,7 +57,7 @@
                         <a href="#" class="yuedu"><span>59</span>次阅读</a>
                     </div>
                 </div>
-            </div>
+            </div> -->
             
 
         </div>
@@ -66,7 +66,39 @@
 
 <script>
 export default {
-    
+    data(){
+        return {
+            goodslist:[]
+        };
+    },
+    created(){
+        this.$axios
+        .get("http://localhost:12580/zhuanti", {
+            params: {
+                "page": 1,
+                "limit": 20
+            }
+        })
+        .then(res => {
+            // console.log(res);
+            let data = res.data.data;
+            for(var i= 0;i < data.length;i++){
+                // console.log(data[i].img)
+                data[i].img = require('../assets/image/' +data[i].img);
+                // data[i].img_cover = './src/assets/image/' +data[i].img_cover;
+            }
+            // console.log(data);
+            this.goodslist = data;
+            console.log(data);
+        });
+    },
+    methods:{
+        tiaozhuan(index){
+            this.$router.push({name:'Detail_article',query:{id:index}});
+            console.log(index);
+        }
+    }
+    // $(.wz_1).on('click','')
 }
 </script>
 <style lang="scss" scoped>
@@ -86,6 +118,7 @@ export default {
         flex:1;
         overflow: auto;
         flex-direction: column;
+        padding-bottom: 80px;
         .wz_1{
             width: 100%;
             position: relative;

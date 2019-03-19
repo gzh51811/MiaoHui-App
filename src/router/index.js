@@ -13,6 +13,7 @@ import Home_cart from '../pages/Home_cart.vue'
 import Home_mine from '../pages/Home_mine.vue'
 import Home_theme from '../pages/Home_theme.vue'
 import notfound from '../pages/NotFound.vue';
+import Detail_share from '../pages/share_goods.vue';
 
 Vue.use(VueRouter);
 let router = new VueRouter({
@@ -26,8 +27,14 @@ let router = new VueRouter({
     },{
         name:'Detail_goods',
         path:'/detail_goods',
-        component:Detail_goods
-    },{
+        component:Detail_goods,
+    },
+    {
+        name:'Detail_share',
+        path:'/detail_goods/share_goods',
+        component:Detail_share
+    },
+    {
         name:'Detail_article',
         path:'/detail_article',
         component:Detail_article

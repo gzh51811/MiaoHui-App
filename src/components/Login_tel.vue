@@ -93,7 +93,7 @@ export default {
         register(){
             this.$refs.ruleForm.validate((valid) => {
                 if (valid) {
-                    let param = {"username":this.ruleForm.username,"password":this.ruleForm.pass};
+                    var param = {"username":this.ruleForm.username,"password":this.ruleForm.pass};
                     this.$axios.post("http://localhost:12580/register", this.$qs.stringify(param))
                     //成功返回
                     .then(response => {
@@ -102,6 +102,25 @@ export default {
                             localStorage.setItem('username',this.ruleForm.username);
                             sessionStorage.setItem('username',this.ruleForm.username);
                             // location.href = '/Home';
+                            // let param2 = {"username":this.ruleForm.username,"password":this.ruleForm.pass};
+                            console.log(param);
+                            this.$axios.post("http://localhost:12580/login", this.$qs.stringify(param))
+                                //成功返回
+                                .then(response => {
+                                    if(response.data.code === 200){
+                                        localStorage.setItem('id',JSON.stringify(response.data._id));
+                                        sessionStorage.setItem('id',JSON.stringify(response.data._id));
+                                    // location.href = '/Home';
+                                    }else {
+                                        alert("登录失败")
+                                    }
+                                    // console.log(response);
+                                    
+                                })
+                                //失败返回
+                                .catch(error => {
+                                    console.log(error);
+                                })
                         }else {
                             alert('注册失败');
                             // return;

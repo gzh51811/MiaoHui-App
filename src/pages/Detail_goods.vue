@@ -1,6 +1,6 @@
 <template>
     <div class="goods">
-        <img :src="require('../assets/image/product_back.png')" class="pageBack ui-link" href="javascript:mpageBack();" @click="mpageBack" />
+        <img :src="require('../assets/image/product_back.png')" class="pageBack ui-link"  href="javascript:history.go(-1)" @click="mpageBack" />
         <div class="product-share">
             <img :src="require('../assets/image/share_product.png')" @click="share_product" />
         </div>
@@ -19,8 +19,8 @@
             <p class="good_description">{{goodsinfo.good_description}}</p>
             <div class="price">
                 <span>￥{{goodsinfo.now_price}}</span>&nbsp;&nbsp;
-                <!-- <del>{{goodsinfo.old_price}}</del> -->
-                <del>￥899</del>
+                <del>{{goodsinfo.old_price}}</del>
+                <!-- <del>￥899</del> -->
 
             </div>
         </div>
@@ -44,6 +44,7 @@
                 </li>
             </ul>
         </div>
+        
     </div>
 </template>
 <script>
@@ -90,10 +91,21 @@ export default {
 
         },
         share_product(){ // 分享商品
-
+            this.$router.push({name:'Detail_share'})
+            // this.$router.push({path:'/detail_goods/share_goods'})
         },
         product_to_cart(){ // 加入购物车
-
+            // 添加购物车
+            let param = {"good_id":"商品id","user_id":"用户id",style:'女生款'};
+            this.$ajax.post("http://localhost:12580/cart/addcart", this.$qs.stringify(param))
+            //成功返回
+            .then(response => {
+                console.log(response);// 后台返回数据
+            })
+            //失败返回
+            .catch(error => {
+                console.log(error);
+            })
         },
         mechatClick(){ // 联系客服
 
