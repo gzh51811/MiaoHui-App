@@ -55,11 +55,10 @@ export default {
     },
     methods:{
          goto(category){
-            console.log(category)
+
         // params传参，不支持path跳转
             this.$router.push({name:'List',query:{'category':category},params:{'category':category}})
-        //   this.$router.push({path:'/goods/'+id})
-        //   this.$router.push({'/goods/'+id)
+
       }
     }
 }

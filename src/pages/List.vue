@@ -50,7 +50,7 @@ export default {
     },
     created(){
         let {category:category} = this.$route.params;
-        console.log(category);
+        // console.log(category);
         this.title = {category:category}
         this.$axios
         .get("http://localhost:12580/goodslist", {
@@ -60,26 +60,24 @@ export default {
             }
         })
         .then(res => {
-            // console.log(res);
+
             let data = res.data.data;
             for(var i= 0;i < data.length;i++){
-                // console.log(data[i].img_cover)
+
                 data[i].img_cover = require('../assets/image/' +data[i].img_cover);
-                // data[i].img_cover = './src/assets/image/' +data[i].img_cover;
+
             }
             this.goodslist = data;
-            console.log(data);
+
         });
     },
     methods:{
         goto(id){
-            // console.log(good_id)
       // params传参，不支持path跳转
             let category = this.title.category;
-            console.log(category);
+
             this.$router.push({name:'Detail_goods',query:{id},params:{id:id,category:category}})
-        //   this.$router.push({path:'/goods/'+id})
-        //   this.$router.push({'/goods/'+id)
+
       },
       backpages(){
           this.$router.push({name:'Home'})
