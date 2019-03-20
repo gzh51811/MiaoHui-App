@@ -19,14 +19,14 @@ export default {
         padding-bottom: 80px;
         width: 100%;
         // height: 100%;
-        .grzx{
+        /deep/ .grzx{
             display: flex;
             // justify-content: center;
             align-items: center;
             overflow: auto;
-            flex: 1;
+            // flex: 1;
             width: 100%;
-            height: 200px;
+            height: 28%;
             background: rgba(255, 198, 10, 0.856);
             flex-direction: column;
             position: relative;
@@ -59,8 +59,5 @@ export default {
             }
         }
     }
-
-
-
 
 </style>
