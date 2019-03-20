@@ -27,20 +27,20 @@
         <div class="ui-navbar">
             <ul class="nav">
                 <li class="kefu">
-                    <a href="" @onclick="mechatClick">
+                    <a href="javascript:;" @onclick="mechatClick">
                         <img :src="require('../assets/image/customer_service.png')">
                     </a>
                 </li>
                 <li class="pinglun">
-                    <a href="" @onclick="btnGoCommentPage">
+                    <a href="javascript:;" @onclick="btnGoCommentPage">
                         <img :src="require('../assets/image/product_comment.png')">
                     </a>
                 </li>
                 <li class="goumai">
-                    <a href="" class="buyNow" @onclick="buyNow">立即购买</a>
+                    <span href="javascript:;" class="buyNow" @click="buyNow">立即购买</span>
                 </li>
                 <li class="addCart">
-                    <a @onclick="product_to_cart">加入购物车</a>
+                    <span  href="javascript:;" @click="btnAddToCart">加入购物车</span>
                 </li>
             </ul>
         </div>
@@ -59,7 +59,6 @@ export default {
     watch:{
         
         $route(to,from){
-            console.log('watch:',to,from)
             this.getData()
         }
     },
@@ -94,13 +93,34 @@ export default {
         },
         product_to_cart(){ // 加入购物车
             // 添加购物车
+            this.$router.push({name:'Home_cart'})
+            // let {id:good_id} = this.$route.params;
+            // let user_id = localStorage.getItem('id');
+            // let param = {"good_id":good_id,"user_id":user_id,style:'女生款'};
+            // this.$axios.post("http://localhost:12580/cart/addcart", this.$qs.stringify(param))
+            // .then(response => {
+            //     if(response.data.data.ok == 1){
+            //         alert("宝贝成功添加购物车")
+            //     }
+            // })
+            // .catch(error => {
+            //     console.log(error);
+            // })
+        },
+        mechatClick(){ // 联系客服
+
+        },
+        btnGoCommentPage(){ // 商品评论
+
+        },
+        buyNow(){ // 立即购买
+            // 添加购物车
+            console.log('立即购买');
             let {id:good_id} = this.$route.params;
             let user_id = localStorage.getItem('id');
             let param = {"good_id":good_id,"user_id":user_id,style:'女生款'};
             this.$axios.post("http://localhost:12580/cart/addcart", this.$qs.stringify(param))
-            //成功返回
             .then(response => {
-                // console.log(response);// 后台返回数据
                 if(response.data.data.ok == 1){
                     alert("宝贝成功添加购物车")
                 }
@@ -110,18 +130,28 @@ export default {
                 console.log(error);
             })
         },
-        mechatClick(){ // 联系客服
-
-        },
-        btnGoCommentPage(){ // 商品评论
-
-        },
-        buyNow(){ // 立即购买
-
-        },
-        // btnAddToCart(){ // 加入购物车
-
-        // }
+        btnAddToCart(){ // 加入购物车
+            // 添加购物车
+            console.log('加入购物车');
+            let {id:good_id} = this.$route.params;
+            let user_id = localStorage.getItem('id');
+            let param = {"good_id":good_id,"user_id":user_id,style:'女生款'};
+            this.$axios.post("http://localhost:12580/cart/addcart", this.$qs.stringify(param))
+            //成功返回
+            .then(response => {
+                if(response.data.data.ok == 1){
+                    // alert("宝贝成功添加购物车")
+                    this.$message({
+                        message: '宝贝成功添加购物车',
+                        type: 'success'
+                    });
+                }
+            })
+            //失败返回
+            .catch(error => {
+                console.log(error);
+            })
+        }
     },
     created(){
         let {category:category} = this.$route.params;
@@ -140,7 +170,13 @@ export default {
     //     line-height: 1.3;
     //     font-family: sans-serif;
     // }
-   
+    /deep/ .el-message.el-message--success{
+        width:auto !important;
+        top:80% !important;
+    }
+    a{
+        text-decoration: none;
+    }
     .goods{
         // el-carousel__indicator is-active
         /deep/ .is-active button{
@@ -215,16 +251,18 @@ export default {
             
             overflow: hidden;
             margin: 0;
-            ul{
-                margin: 0;
-                height: 1.066667rem;
-                background-color: #333;
-                position: fixed;
+            position: fixed;
                 bottom: 0;
                 left: 0;
                 right: 0;
                 z-index: 9999;
-                border: none!important;
+                 border: none!important;
+            ul{
+                margin: 0;
+                height: 1.066667rem;
+                background-color: #333;
+                
+               
                 li{
                     float: left;
                     display: flex;
@@ -241,6 +279,18 @@ export default {
                     font-weight: 700;
                     margin: 0;
                     padding: 0;
+                }
+                span{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    height: 100%;
+                    font-weight: 700;
+                    margin: 0;
+                    padding: 0;
+                    user-select: none;
+                    cursor: pointer;
                 }
                 .kefu{
                     width: 20% !important;
@@ -266,7 +316,7 @@ export default {
                 .goumai{
                     width: 30% !important;
                     background-color: #d5342d!important;
-                    a{
+                    span{
                         color: #fff;
                         font-size: .44rem;
 
@@ -275,7 +325,7 @@ export default {
                 .addCart{
                     width: 30% !important;
                     background-color: #ffbe1f!important;
-                    a{
+                    span{
                         color: #fff;
                         font-size: .44rem;
 

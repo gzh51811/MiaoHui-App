@@ -7,12 +7,12 @@
             <el-form-item  prop="password">
                 <el-input type="password" v-model="ruleForm.password" autocomplete="off"  placeholder="密码"  show-password></el-input>
             </el-form-item>
-            <el-form-item  prop="validCode">
+            <!-- <el-form-item  prop="validCode">
                 <el-input type="text" v-model="ruleForm.validCode" autocomplete="off" placeholder="验证码"></el-input>
             </el-form-item>
             <a class="validCodeImg">
                 <img src="../assets/image/code (1).jpg" />
-            </a>
+            </a> -->
 
             <el-button type="warning" @click="login" class="btn" >登录</el-button>
         </el-form>
@@ -44,18 +44,18 @@ export default {
                 callback();
             }
         };
-        var validCode = (rule, value, callback) => {
-            if (value.trim() === '') {
-                callback(new Error('请输入验证码'));
-            }else {
-                callback();
-            }
-        };
+        // var validCode = (rule, value, callback) => {
+        //     if (value.trim() === '') {
+        //         callback(new Error('请输入验证码'));
+        //     }else {
+        //         callback();
+        //     }
+        // };
         return {
             ruleForm: {
                 username: '',
                 password: '',
-                validCode: ''
+                // validCode: ''
             },
             rules: {
                 username: [
@@ -64,9 +64,9 @@ export default {
                 password: [
                     { validator: validatePass, trigger: 'blur' }
                 ],
-                validCode: [
-                    { validator: validCode, trigger: 'blur' }
-                ]
+                // validCode: [
+                //     { validator: validCode, trigger: 'blur' }
+                // ]
             }
         };
     },
@@ -124,19 +124,19 @@ export default {
         /deep/ .el-input__inner{
             height:1.333333rem;
         }
-        .validCodeImg{
-            display:block;
-            width:2.666667rem;
-            height:1.6rem;
-            margin-bottom:.533333rem;
+        // .validCodeImg{
+        //     display:block;
+        //     width:2.666667rem;
+        //     height:1.6rem;
+        //     margin-bottom:.533333rem;
            
-            img{
-                width:100%;
-                height:100%;
-                 border: .013333rem solid #E6A23C;
-            border-radius: .066667rem;
-            }
-        }
+        //     img{
+        //         width:100%;
+        //         height:100%;
+        //          border: .013333rem solid #E6A23C;
+        //     border-radius: .066667rem;
+        //     }
+        // }
         /deep/ .btn{
             background-color:#E6A23C;
             width:9.333333rem;

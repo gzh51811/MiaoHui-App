@@ -8,6 +8,7 @@
 import Vue from 'vue';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import '@/assets/reset.css';
 //ElementUI以插件的形式来扩展vue的功能
 
 import axios from 'axios';
