@@ -110,7 +110,7 @@ export default {
                                     if(response.data.code === 200){
                                         localStorage.setItem('id',JSON.stringify(response.data._id));
                                         sessionStorage.setItem('id',JSON.stringify(response.data._id));
-                                        this.$router.push({name:'Home_mineDetail'})
+                                        this.$router.push({name:'Home_mine'})
                                     }else {
                                         alert("登录失败")
                                     }

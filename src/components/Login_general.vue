@@ -85,7 +85,7 @@ export default {
                                 sessionStorage.setItem('username',JSON.stringify(response.data.username));
                                 localStorage.setItem('id',JSON.stringify(response.data._id));
                                 sessionStorage.setItem('id',JSON.stringify(response.data._id));
-                                this.$router.push({name:'Home_mineDetail'})
+                                this.$router.push({name:'Home_mine'})
                             }else {
                                 alert("登录失败")
                             }
