@@ -73,7 +73,7 @@ export default {
         // background: #0f0;
         overflow: auto;
         flex-direction: column;
-        margin-bottom: 80px;
+        margin-bottom: 1.6rem;
         .wz_1{
             width: 100%;
             // height: 300px;
