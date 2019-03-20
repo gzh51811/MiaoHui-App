@@ -13,6 +13,7 @@ import Home_cart from '../pages/Home_cart.vue'
 import Home_mine from '../pages/Home_mine.vue'
 import Home_theme from '../pages/Home_theme.vue'
 import notfound from '../pages/NotFound.vue';
+import Home_mineDetail from '../pages/Home_mineDetail.vue';
 
 Vue.use(VueRouter);
 let router = new VueRouter({
@@ -77,7 +78,12 @@ let router = new VueRouter({
                 name:'Home_mine',
                 path:'/home/mine',
                 component:Home_mine
-            }
+            },{
+                name:'Home_mineDetail',
+                path:'/home/mineDetail',
+                component:Home_mineDetail
+                
+            },
         ]
     },{
         path:'*',
