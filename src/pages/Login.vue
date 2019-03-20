@@ -2,8 +2,8 @@
     <div id="login">
         <div class="top">
             
-            <a href="">
-                <img src="../assets/image/header_back.png" alt="">
+            <a href="javascript:;">
+                <img src="../assets/image/header_back.png" alt="" @click="backpages">
             </a>
             <h1>登录</h1>
         </div>
@@ -55,9 +55,12 @@ export default {
         loginTel
     },
     methods: {
-      handleClick(tab, event) {
-        // console.log(tab, event);
-      }
+        handleClick(tab, event) {
+            // console.log(tab, event);
+        },
+        backpages(){
+            this.$router.push({name:'Home_mine'})
+        }
     }
 }
 </script>

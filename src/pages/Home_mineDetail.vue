@@ -2,7 +2,7 @@
     <div class="main">
         <div class="grzxtou">  
             <img src="../assets/image/touxiang.png" alt="">
-            <p>用户ID <span class="s1">M0</span></p>
+            <p>用户{{username}} <span class="s1">M0</span></p>
             <p><span class="s3"><span>0</span> 个妙钻</span><span class="s3"><span>7</span> 张优惠卷</span></p>
             <a href="#"></a>
             <h2 class="s2">购买咨询</h2>
@@ -29,7 +29,16 @@
 
 <script>
 export default {
-    
+    data(){
+        return {
+            username:''
+        }
+    },
+    create(){
+        let username = localStorage.getItem('username');
+        console.log(username);
+        this.username = username;
+    }
 }
 </script>
 <style lang="scss" scoped>

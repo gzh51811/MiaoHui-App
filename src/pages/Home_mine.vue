@@ -1,17 +1,33 @@
 <template>
     <div class="main">
         <div class="grzx">  
-            <img src="../assets/image/touxiang.png" alt="">
+            <img src="../assets/image/touxiang.png" alt="" @click="seting">
             <span>速来登录，获取全球创意</span>
-            <button>登录/注册</button>
+            <button @click="login">登录/注册</button>
             <a href="#"></a>
         </div>
     </div>
 </template>
-
+    
 <script>
 export default {
-    
+    created(){
+        console.log(localStorage.getItem('id'))
+        let id = localStorage.getItem('id')
+        if(id != null){
+            // console.log('00');
+            this.$router.push({name:'Home_mineDetail'})
+        }
+        
+    },
+    methods:{
+        seting(){
+
+        },
+        login(){
+            this.$router.push({name:'Login'})
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -26,7 +42,7 @@ export default {
             overflow: auto;
             // flex: 1;
             width: 100%;
-            height: 28%;
+            height: 35%;
             background: rgba(255, 198, 10, 0.856);
             flex-direction: column;
             position: relative;
@@ -38,12 +54,21 @@ export default {
             button{
                 width: 95%;
                 height: 40px;
-                background: rgba(26, 25, 25, 0.979);
-                color: aliceblue;
-                font-size: 16px;
-                border: none;
+
                 border-radius:5px;
-                margin: 10px;
+                // margin: 10px;
+                background-color: #191919 !important;
+                color: #ffffff !important;
+                // margin: .5rem .4rem;
+                margin-top: 12px;
+
+                cursor: pointer;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                box-shadow: none !important;
+                border: none !important;
             }
             a{
                 position: absolute;
