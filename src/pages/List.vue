@@ -48,6 +48,12 @@ export default {
             title:{}
         };
     },
+    watch:{
+        $route(to,from){
+            console.log('watch:',to,from)
+            this.getData()
+        }
+    },
     created(){
         let {category:category} = this.$route.params;
         // console.log(category);
