@@ -16,24 +16,50 @@ import notfound from '../pages/NotFound.vue';
 import Detail_share from '../pages/share_goods.vue';
 import Home_mineDetail from '../pages/Home_mineDetail.vue';
 
+import View_details from '../pages/View_details.vue';
 Vue.use(VueRouter);
 let router = new VueRouter({
     routes:[{
         path:'/',
-        redirect:'/home'
+        redirect:'/home',
+        meta:{
+            keepAlive:true,
+            isBack:true,
+        }
     },{
         name:'List',
         path:'/list',
-        component:List
+        component:List,
+        meta:{
+            keepAlive:true,
+            isBack:true,
+        }
     },{
         name:'Detail_goods',
         path:'/detail_goods',
+        meta:{
+            keepAlive:true,
+            isBack:true,
+        },
         component:Detail_goods,
     },
     {
         name:'Detail_share',
         path:'/detail_goods/share_goods',
+        meta:{
+            keepAlive:true,
+            isBack:true,
+        },
         component:Detail_share
+    },
+    {
+        name:'View_details',
+        path:'/detail_goods/view_details',
+        meta:{
+            keepAlive:true,
+            isBack:true,
+        },
+        component:View_details
     },
     {
         name:'Detail_article',
