@@ -13,11 +13,8 @@ import Home_cart from '../pages/Home_cart.vue'
 import Home_mine from '../pages/Home_mine.vue'
 import Home_theme from '../pages/Home_theme.vue'
 import notfound from '../pages/NotFound.vue';
-<<<<<<< HEAD
 import Detail_share from '../pages/share_goods.vue';
-=======
 import Home_mineDetail from '../pages/Home_mineDetail.vue';
->>>>>>> bin
 
 Vue.use(VueRouter);
 let router = new VueRouter({
