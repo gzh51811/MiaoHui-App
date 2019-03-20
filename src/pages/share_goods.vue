@@ -38,17 +38,22 @@
 export default {
     data(){
         return {
-            good_id:''
+            good_id:'',
+            category:''
         }
     },
     created(){
         let {id:good_id} = this.$route.params;
+        let {category:category} = this.$route.params;
         this.good_id = good_id;
+        this.category = category;
+
     },
     methods:{
         backpages(){
             let id = this.good_id;
-            this.$router.push({name:'Detail_goods',query:{id},params:{id}})
+            let category = this.category;
+            this.$router.push({name:'Detail_goods',query:{id,category},params:{id,category}})
         }
     }
 }

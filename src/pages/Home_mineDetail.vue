@@ -42,9 +42,9 @@ export default {
             // justify-content: center;
             align-items: center;
             overflow: auto;
-            flex: 1;
+            // flex: 1;
             width: 100%;
-            height: 200px;
+            height: 30%;
             background: rgba(255, 198, 10, 0.856);
             flex-direction: column;
             position: relative;

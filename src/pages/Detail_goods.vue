@@ -6,6 +6,7 @@
         </div>
         <div class="product-add-to-cart">
             <img :src="require('../assets/image/product_add_to_cart.png')" @click="product_to_cart" />
+            <div class="C_num">{{goodsQty}}</div>
         </div>
         <div class="block">
             <el-carousel trigger="click" height="492px">
@@ -26,15 +27,16 @@
         </div>
         <div class="ui-navbar">
             <ul class="nav">
-                <li class="kefu">
-                    <a href="javascript:;" @onclick="mechatClick">
-                        <img :src="require('../assets/image/customer_service.png')">
-                    </a>
-                </li>
                 <li class="pinglun">
                     <a href="javascript:;" @onclick="btnGoCommentPage">
                         <img :src="require('../assets/image/product_comment.png')">
                     </a>
+                </li>
+                <li class="kefu">
+                    <span  href="javascript:;" @click="mechatClick(goodsinfo.good_id)">查看详情</span>
+                    <!-- <a href="javascript:;" @onclick="mechatClick">
+                        <img :src="require('../assets/image/customer_service.png')">
+                    </a> -->
                 </li>
                 <li class="goumai">
                     <span href="javascript:;" class="buyNow" @click="buyNow">立即购买</span>
@@ -57,9 +59,14 @@ export default {
         }
     },
     watch:{
-        
         $route(to,from){
+            console.log('watch:',to,from)
             this.getData()
+        }
+    },
+    computed:{
+        goodsQty(){
+            return this.$store.state.cartList.length;
         }
     },
     methods:{
@@ -73,7 +80,10 @@ export default {
                     }
                 })
             var goodsdata = data[0];
-
+            console.log(goodsdata);
+            if(goodsdata.old_price != ''){
+                goodsdata.old_price = '￥'+goodsdata.old_price;
+            }
             this.goodsinfo = goodsdata;
             var imgs = [];
             for(let i = 1;i < 6;i++){
@@ -83,46 +93,54 @@ export default {
             this.goodsimg = imgs;
 
         },
+         async created(){
+  
+            let user_id = localStorage.getItem('id');
+            await this.$store.dispatch("getCartData",user_id);
+        },
         mpageBack(){// 上一页面
                 let category = this.title.category;
                 this.$router.push({name:'List',query:{category},params:{category}})
         },
         share_product(){ // 分享商品
+            let category = this.title.category;
             let id = this.goodsinfo.good_id;
-            this.$router.push({name:'Detail_share',query:{id},params:{id}})
+            this.$router.push({name:'Detail_share',query:{id,category},params:{id,category}})
         },
         product_to_cart(){ // 加入购物车
             // 添加购物车
             this.$router.push({name:'Home_cart'})
-            // let {id:good_id} = this.$route.params;
-            // let user_id = localStorage.getItem('id');
-            // let param = {"good_id":good_id,"user_id":user_id,style:'女生款'};
-            // this.$axios.post("http://localhost:12580/cart/addcart", this.$qs.stringify(param))
-            // .then(response => {
-            //     if(response.data.data.ok == 1){
-            //         alert("宝贝成功添加购物车")
-            //     }
-            // })
-            // .catch(error => {
-            //     console.log(error);
-            // })
-        },
-        mechatClick(){ // 联系客服
 
+        },
+        mechatClick(id){ // 联系客服
+            // let good_id = id;
+            console.log(id);
+            let category = this.title.category;
+            this.$router.push({name:'View_details',query:{id},params:{id:id,category:category}})
         },
         btnGoCommentPage(){ // 商品评论
 
         },
         buyNow(){ // 立即购买
             // 添加购物车
-            console.log('立即购买');
+            // console.log('立即购买');
             let {id:good_id} = this.$route.params;
             let user_id = localStorage.getItem('id');
             let param = {"good_id":good_id,"user_id":user_id,style:'女生款'};
             this.$axios.post("http://localhost:12580/cart/addcart", this.$qs.stringify(param))
             .then(response => {
                 if(response.data.data.ok == 1){
-                    alert("宝贝成功添加购物车")
+                    // alert("宝贝成功添加购物车")
+                    this.$message({
+                        message: '宝贝成功购买',
+                        type: 'success'
+                    });
+                    if(response.data.count == 1000){
+                        // 商品不存在，添加购物车
+                        this.$store.state.cartList.push({good_id});
+                    }else {
+                        // 商品已经存在，添加商品数量
+                    }
                 }
             })
             //失败返回
@@ -132,25 +150,33 @@ export default {
         },
         btnAddToCart(){ // 加入购物车
             // 添加购物车
-            console.log('加入购物车');
+            // console.log('加入购物车');
             let {id:good_id} = this.$route.params;
             let user_id = localStorage.getItem('id');
             let param = {"good_id":good_id,"user_id":user_id,style:'女生款'};
             this.$axios.post("http://localhost:12580/cart/addcart", this.$qs.stringify(param))
             //成功返回
             .then(response => {
+                console.log(response);
                 if(response.data.data.ok == 1){
                     // alert("宝贝成功添加购物车")
                     this.$message({
                         message: '宝贝成功添加购物车',
                         type: 'success'
                     });
+                    if(response.data.count == 1000){
+                        // 商品不存在，添加购物车
+                        this.$store.state.cartList.push({good_id});
+                    }else {
+                        // 商品已经存在，添加商品数量
+                    }
                 }
             })
             //失败返回
             .catch(error => {
                 console.log(error);
             })
+            // list.
         }
     },
     created(){
@@ -165,26 +191,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    // body{
-    //     font-size: 1em;
-    //     line-height: 1.3;
-    //     font-family: sans-serif;
-    // }
-    /deep/ .el-message.el-message--success{
-        width:auto !important;
-        top:80% !important;
-    }
+
     a{
         text-decoration: none;
     }
     .goods{
-        // el-carousel__indicator is-active
+        padding-bottom: 1.066667rem;
         /deep/ .is-active button{
             background-color: #d5342d
-            // padding: 0;
-            // width: .16rem;
-            // height: .16rem;
-            // border-radius: 50%;
         }
         /deep/ .el-carousel__indicator{
             padding: 20px 10px;
@@ -195,12 +209,21 @@ export default {
             border-radius: 50%;
             background-color: #333;
         }
-        .pageBack,.product-share img,.product-add-to-cart img{
+        .pageBack,.product-share img{
             display: block;
             position: fixed;
             width: 1.28rem;
             height: 1.28rem;
             z-index: 9999;
+        }
+        .product-add-to-cart{
+            position: fixed;
+            z-index: 9999;
+        }
+        .product-add-to-cart img{
+            display: block;
+            width: 1.28rem;
+            height: 1.28rem;
         }
         .pageBack{
             left: .4rem;
@@ -210,9 +233,21 @@ export default {
             right: 2.0rem;
             top: .4rem;
         }
-        .product-add-to-cart img{
+        .product-add-to-cart{
             right: .4rem;
             top: .4rem;
+        }
+        .product-add-to-cart .C_num{
+            width: .5rem;
+            height: .5rem;
+            position: absolute;
+            top: -8px;
+            right: 0px;
+            border-radius: 50%;
+            background-color: #58bc58;
+            color: #fff;
+            font-weight: 700;
+            line-height: .5rem;
         }
         .el-carousel__item{
             overflow: hidden;
@@ -260,9 +295,7 @@ export default {
             ul{
                 margin: 0;
                 height: 1.066667rem;
-                background-color: #333;
-                
-               
+                // background-color: #333;   
                 li{
                     float: left;
                     display: flex;
@@ -293,42 +326,39 @@ export default {
                     cursor: pointer;
                 }
                 .kefu{
-                    width: 20% !important;
-                    // height: 1.173333rem;
-                    background-color: #0e0e0e;
-                    img{
-                        width: .533333rem;
-                        height: .533333rem;
-                        // line-height: 1.173333rem;
- 
+                    width: 25% !important;
+                    box-sizing: border-box;
+                    border-left: 1px solid #ebebeb;
+                    background-color: #eee;
+                     span{
+                        color: #fff;
+                        font-size: .44rem;
+                        color: #757575;
                     }
                 }
                 .pinglun{
-                    width: 20% !important;
-                    // height: 1.173333rem;
-                    background-color: #1a1a1a;
+                    width: 15% !important;
+                    background-color: #eee;
                     img{
                         width: .533333rem;
                         height: .533333rem;
-
                     }
+                   
                 }
                 .goumai{
                     width: 30% !important;
-                    background-color: #d5342d!important;
+                    background-color: #febe20!important;
                     span{
                         color: #fff;
                         font-size: .44rem;
-
                     }
                 }
                 .addCart{
                     width: 30% !important;
-                    background-color: #ffbe1f!important;
+                    background-color: #191919!important;
                     span{
                         color: #fff;
                         font-size: .44rem;
-
                     }
                 }
             }
