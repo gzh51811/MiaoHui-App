@@ -15,6 +15,7 @@ import Home_theme from '../pages/Home_theme.vue'
 import notfound from '../pages/NotFound.vue';
 import Detail_share from '../pages/share_goods.vue';
 import user_setting from '../pages/user_setting.vue';
+import Account from '../pages/account.vue';
 
 
 import View_details from '../pages/View_details.vue';
@@ -67,6 +68,11 @@ let router = new VueRouter({
         path:'/detail_article',
         component:Detail_article
         
+    },
+    {
+        name:'Account',
+        path:'/account',
+        component:Account,
     },
     {
         name:'user_setting',

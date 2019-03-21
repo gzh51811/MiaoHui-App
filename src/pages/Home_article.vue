@@ -29,14 +29,14 @@ export default {
     },
     created(){
         this.$axios
-        .get("http://localhost:12580/mylz", {
+        .get("/mylz", {
             params: {
                 "page": 1,
                 "limit": 20
             }
         })
         .then(res => {
-            console.log(res);
+            // console.log(res);
             let data = res.data.data;
             for(var i= 0;i < data.length;i++){
                 // console.log(data[i].img_cover)
@@ -44,7 +44,7 @@ export default {
                 // data[i].img_cover = './src/assets/image/' +data[i].img_cover;
             }
             this.goodslist = data;
-            console.log(data);
+            // console.log(data);
         });
     },
     methods:{

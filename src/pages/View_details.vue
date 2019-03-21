@@ -35,7 +35,7 @@ export default {
     },
     watch:{
         $route(to,from){
-            console.log('watch:',to,from)
+            // console.log('watch:',to,from)
             this.getData()
         }
     },
@@ -49,7 +49,7 @@ export default {
             // 如何获取id
             let {id:good_id} = this.$route.params;
             let {data:{data}} = await this.$axios
-                .get("http://localhost:12580/goodslist/details", {
+                .get("/goodslist/details", {
                     params: {
                         good_id
                     }
@@ -83,7 +83,7 @@ export default {
             let {id:good_id} = this.$route.params;
             let user_id = localStorage.getItem('id');
             let param = {"good_id":good_id,"user_id":user_id,style:'女生款'};
-            this.$axios.post("http://localhost:12580/cart/addcart", this.$qs.stringify(param))
+            this.$axios.post("/cart/addcart", this.$qs.stringify(param))
             //成功返回
             .then(response => {
                 if(response.data.data.ok == 1){
@@ -102,7 +102,7 @@ export default {
             })
             //失败返回
             .catch(error => {
-                console.log(error);
+                // console.log(error);
             })
         }
     },

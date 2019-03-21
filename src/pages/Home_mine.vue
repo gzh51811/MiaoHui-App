@@ -23,7 +23,7 @@
                 <div class="youhj guanli">优惠卷<img src="../assets/image/qianjin1.png" alt=""></div>
                 <div class="shouhdz guanli">收货地址<img src="../assets/image/qianjin1.png" alt=""></div>
                 <div class="wodbs guanli">我的鄙视<img src="../assets/image/qianjin1.png" alt=""></div>
-                <div class="zhanghgl guanli">账号管理<img src="../assets/image/qianjin1.png" alt=""></div>
+                <div class="zhanghgl guanli" @click="userManage">账号管理<img src="../assets/image/qianjin1.png" alt=""></div>
             </div>
         </div>
         <div class="grzx" v-else>  
@@ -44,13 +44,13 @@ export default {
         }
     },
     created(){
-        console.log(localStorage.getItem('id'));
+        // console.log(localStorage.getItem('id'));
         if(localStorage.getItem('id')){
             this.uid = true;
+            let name = localStorage.getItem('username');
+            name = name.slice(1,-1);
+            this.username = name;
         }
-        let name = localStorage.getItem('username');
-        name = name.slice(1,-1);
-        this.username = name;
     },
     methods:{
         seting(){
@@ -58,6 +58,9 @@ export default {
         },
         login(){
             this.$router.push({name:'Login'});
+        },
+        userManage(){
+            this.$router.push({name:'Account'});
         }
     }
 }

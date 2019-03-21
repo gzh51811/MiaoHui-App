@@ -65,7 +65,7 @@ export default {
     },
     created(){
         let {gid} = this.$route.query;
-        this.$axios.get("http://localhost:12580/mylz/single", {
+        this.$axios.get("/mylz/single", {
             params: {gid}
         }).then(res => {
             let data = res.data.data;

@@ -64,7 +64,7 @@ export default {
         //购物车数据
         let user_id = localStorage.getItem('id');
         let param = { 'user_id': user_id };
-        this.$axios.post("http://localhost:12580/cart/list", this.$qs.stringify(param))
+        this.$axios.post("/cart/list", this.$qs.stringify(param))
         .then(response => {
             // console.log(response);// 后台返回数据
             let data = response.data.data;
@@ -108,14 +108,14 @@ export default {
                 this.cartList[idx].nums--;
                 //axios
                 let param = {"good_id":this.cartList[idx].good_id,"user_id":this.cartList[idx].user_id};
-                this.$axios.post("http://localhost:12580/cart/reduce", this.$qs.stringify(param))
+                this.$axios.post("/cart/reduce", this.$qs.stringify(param))
                 //成功返回
                 .then(response => {
-                    console.log(response);// 后台返回数据
+                    // console.log(response);// 后台返回数据
                 })
                 //失败返回
                 .catch(error => {
-                    console.log(error);
+                    // console.log(error);
                 })
                 this.totalPrice();
             }
@@ -125,14 +125,14 @@ export default {
             this.cartList[idx].nums++;
             this.totalPrice();
             let param = {"good_id":this.cartList[idx].good_id,"user_id":this.cartList[idx].user_id};
-            this.$axios.post("http://localhost:12580/cart/add", this.$qs.stringify(param))
+            this.$axios.post("/cart/add", this.$qs.stringify(param))
             //成功返回
             .then(response => {
-                console.log(response);// 后台返回数据
+                // console.log(response);// 后台返回数据
             })
             //失败返回
             .catch(error => {
-                console.log(error);
+                // console.log(error);
             })
         },
         //勾选
@@ -158,14 +158,14 @@ export default {
                 
                 //axios
                 let param = {"good_id":id,"user_id":this.cartList[i].user_id};
-                this.$axios.post("http://localhost:12580/cart/delete", this.$qs.stringify(param))
+                this.$axios.post("/cart/delete", this.$qs.stringify(param))
                 //成功返回
                 .then(response => {
-                    console.log(response);// 后台返回数据
+                    // console.log(response);// 后台返回数据
                 })
                 //失败返回
                 .catch(error => {
-                    console.log(error);
+                    // console.log(error);
                 })
 
                 this.cartNum--;
@@ -193,10 +193,10 @@ export default {
                 }
                 this.$store.commit('removeGoods',this.cartList[i].good_id);
                 let param = {"good_id":this.cartList[i].good_id,"user_id":this.cartList[i].user_id};
-                this.$axios.post("http://localhost:12580/cart/delete", this.$qs.stringify(param))
+                this.$axios.post("/cart/delete", this.$qs.stringify(param))
                 //成功返回
                 .then(response => {
-                    console.log(response);// 后台返回数据
+                    // console.log(response);// 后台返回数据
                 })
                 this.cartList.splice(i,1);
                 

@@ -44,7 +44,8 @@ export default {
 
         //点击商品跳转
         jumpToDetail(id){
-            this.$router.push({name:'Detail_goods',query:{id},params:{id}});
+            let category = '首页'
+            this.$router.push({name:'Detail_goods',query:{id,category},params:{id,category}});
         },
          //懒加载
         getScrollTop() {
@@ -90,7 +91,7 @@ export default {
                 this.loadingGif = true;
                 this.load = false;
                 if (this.loading) {
-                let res = await this.$axios.get("http://localhost:12580/goodslist", {
+                let res = await this.$axios.get("/goodslist", {
                         params: {
                             "page": ++this.page,
                             "limit": 5
@@ -122,21 +123,21 @@ export default {
 
     },
     created(){
-        this.$axios.get("http://localhost:12580/goodslist", {
+        this.$axios.get("/goodslist", {
             params: {
                 "page": 1,
                 "limit": 5
             }
         })
         .then(res => {
-            console.log(res);
+            // console.log(res);
             let data = res.data.data;
             for(let i=0; i<data.length; i++){
                 data[i].img_cover = require('../assets/image/'+data[i].img_cover);
             }
             this.hotGoods = data;
             this.count = Math.ceil(res.data.count/5);
-            console.log(this.count);
+            // console.log(this.count);
         });
     }
 }

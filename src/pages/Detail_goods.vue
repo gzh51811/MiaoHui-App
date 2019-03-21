@@ -60,7 +60,7 @@ export default {
     },
     watch:{
         $route(to,from){
-            console.log('watch:',to,from)
+            // console.log('watch:',to,from)
             this.getData()
         }
     },
@@ -74,13 +74,13 @@ export default {
             // 如何获取id
             let {id:good_id} = this.$route.params;
             let {data:{data}} = await this.$axios
-                .get("http://localhost:12580/goodslist/details", {
+                .get("/goodslist/details", {
                     params: {
                         good_id
                     }
                 })
             var goodsdata = data[0];
-            console.log(goodsdata);
+            // console.log(goodsdata);
             if(goodsdata.old_price != ''){
                 goodsdata.old_price = '￥'+goodsdata.old_price;
             }
@@ -100,7 +100,12 @@ export default {
         },
         mpageBack(){// 上一页面
                 let category = this.title.category;
-                this.$router.push({name:'List',query:{category},params:{category}})
+                if(category == '首页'){
+                    history.back();
+                }else {
+                    
+                    this.$router.push({name:'List',query:{category},params:{category}})
+                }
         },
         share_product(){ // 分享商品
             let category = this.title.category;
@@ -114,7 +119,7 @@ export default {
         },
         mechatClick(id){ // 联系客服
             // let good_id = id;
-            console.log(id);
+            // console.log(id);
             let category = this.title.category;
             this.$router.push({name:'View_details',query:{id},params:{id:id,category:category}})
         },
@@ -127,7 +132,7 @@ export default {
             let {id:good_id} = this.$route.params;
             let user_id = localStorage.getItem('id');
             let param = {"good_id":good_id,"user_id":user_id,style:'女生款'};
-            this.$axios.post("http://localhost:12580/cart/addcart", this.$qs.stringify(param))
+            this.$axios.post("/cart/addcart", this.$qs.stringify(param))
             .then(response => {
                 if(response.data.data.ok == 1){
                     // alert("宝贝成功添加购物车")
@@ -145,7 +150,7 @@ export default {
             })
             //失败返回
             .catch(error => {
-                console.log(error);
+                // console.log(error);
             })
         },
         btnAddToCart(){ // 加入购物车
@@ -154,10 +159,10 @@ export default {
             let {id:good_id} = this.$route.params;
             let user_id = localStorage.getItem('id');
             let param = {"good_id":good_id,"user_id":user_id,style:'女生款'};
-            this.$axios.post("http://localhost:12580/cart/addcart", this.$qs.stringify(param))
+            this.$axios.post("/cart/addcart", this.$qs.stringify(param))
             //成功返回
             .then(response => {
-                console.log(response);
+                // console.log(response);
                 if(response.data.data.ok == 1){
                     // alert("宝贝成功添加购物车")
                     this.$message({
@@ -174,7 +179,7 @@ export default {
             })
             //失败返回
             .catch(error => {
-                console.log(error);
+                // console.log(error);
             })
             // list.
         }

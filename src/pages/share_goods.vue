@@ -2,25 +2,25 @@
     <div class="share">
         <ul class="share_list">
             <li class="weibo  mr-60">
-                <a href="http://service.weibo.com/share/share.php?#_loginLayer_1552962583239">
+                <a href="javascript:;">
                     <img src="../assets/image/sns_icon_1@2x_b.png" />
                     <span>新浪微博</span>
                 </a> 
             </li>
             <li class="kongjian mr-60">
-                <a href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey">
+                <a href="javascript:;">
                     <img src="../assets/image/sns_icon_6@2x_b.png" />
                     <span>QQ空间</span>
                 </a> 
             </li>
             <li class="haoyou">
-                <a href="http://service.weibo.com/share/share.php?#_loginLayer_1552962583239">
+                <a href="javascript:;">
                     <img src="../assets/image/sns_icon_24@2x_b.png" />
                     <span>QQ好友</span>
                 </a> 
             </li>
             <li class="huabang">
-                <a href="http://service.weibo.com/share/share.php?#_loginLayer_1552962583239">
+                <a href="javascript:;">
                     <img src="../assets/image/sns_icon_5@2x_b.png" />
                     <span>花瓣</span>
                 </a> 

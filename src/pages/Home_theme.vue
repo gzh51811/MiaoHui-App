@@ -28,7 +28,7 @@ export default {
     },
     created(){
         this.$axios
-        .get("http://localhost:12580/zhuanti", {
+        .get("/zhuanti", {
             params: {
                 "page": 1,
                 "limit": 20
@@ -40,7 +40,7 @@ export default {
                 data[i].img = require('../assets/image/' +data[i].img);
             }
             this.goodslist = data;
-            console.log(data);
+            // console.log(data);
         });
     },
     methods:{

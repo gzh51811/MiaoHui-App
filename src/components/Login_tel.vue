@@ -29,13 +29,13 @@ export default {
             // callback();
                 // console.log(666);
             this.$axios
-                .get("http://localhost:12580/register/verification", {
+                .get("/register/verification", {
                     params: {
                         "username": value
                     }
                 })
                 .then(res => {
-                    console.log(res);
+                    // console.log(res);
                     if(res.data.code == 100){
                         callback();
                     }else {
@@ -94,22 +94,20 @@ export default {
             this.$refs.ruleForm.validate((valid) => {
                 if (valid) {
                     var param = {"username":this.ruleForm.username,"password":this.ruleForm.pass};
-                    this.$axios.post("http://localhost:12580/register", this.$qs.stringify(param))
+                    this.$axios.post("/register", this.$qs.stringify(param))
                     //成功返回
                     .then(response => {
-                        console.log(response);// 后台返回数据
+                        // console.log(response);// 后台返回数据
                         if(response.data.code == 200){
                             localStorage.setItem('username',this.ruleForm.username);
-                            sessionStorage.setItem('username',this.ruleForm.username);
                             // location.href = '/Home';
                             // let param2 = {"username":this.ruleForm.username,"password":this.ruleForm.pass};
-                            console.log(param);
-                            this.$axios.post("http://localhost:12580/login", this.$qs.stringify(param))
+                            // console.log(param);
+                            this.$axios.post("/login", this.$qs.stringify(param))
                                 //成功返回
                                 .then(response => {
                                     if(response.data.code === 200){
                                         localStorage.setItem('id',JSON.stringify(response.data._id));
-                                        sessionStorage.setItem('id',JSON.stringify(response.data._id));
                                         this.$router.push({name:'Home_mine'})
                                     }else {
                                         alert("登录失败")
@@ -119,7 +117,7 @@ export default {
                                 })
                                 //失败返回
                                 .catch(error => {
-                                    console.log(error);
+                                    // console.log(error);
                                 })
                         }else {
                             alert('注册失败');
@@ -128,7 +126,7 @@ export default {
                     })
                     //失败返回
                     .catch(error => {
-                        console.log(error);
+                        // console.log(error);
                     })
 
                 } else {
@@ -136,32 +134,6 @@ export default {
                 }
             });
         },
-        // 验证用户名
-        // verification(){
-        //     this.$refs.ruleForm.validate((valid) => {
-
-        //         // if (valid) {
-        //             var username = this.ruleForm.username;
-                    
-        //             this.$axios
-        //                 .get("http://localhost:12580/register/verification", {
-        //                     params: {
-        //                         "username": username
-        //                     }
-        //                 })
-        //                 .then(res => {
-        //                     console.log(res);
-        //                     if(res.data.code == 100){
-
-        //                     }
-                            
-        //                 });
-
-        //         // } else {
-        //         //     return false;
-        //         // }
-        //     });
-        // }
        
     }   
 }
