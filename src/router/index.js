@@ -15,7 +15,7 @@ import Home_theme from '../pages/Home_theme.vue'
 import notfound from '../pages/NotFound.vue';
 import Detail_share from '../pages/share_goods.vue';
 import Home_mineDetail from '../pages/Home_mineDetail.vue';
-
+import user_setting from '../pages/user_setting.vue';
 import View_details from '../pages/View_details.vue';
 Vue.use(VueRouter);
 let router = new VueRouter({
@@ -34,6 +34,11 @@ let router = new VueRouter({
             keepAlive:true,
             isBack:true,
         }
+    },{
+        name:'user_setting',
+        path:'/setting',
+        component:user_setting,
+
     },{
         name:'Detail_goods',
         path:'/detail_goods',
