@@ -1,7 +1,9 @@
 <template>
 <div style="height:100%">
     <div class="box">
+        <keep-alive include="Home_main">
         <router-view></router-view>
+        </keep-alive>
         <div class="footer">
             <ul>
                 <li v-for="nav in navs" :key="nav.name" @click="changepage(nav.title)">

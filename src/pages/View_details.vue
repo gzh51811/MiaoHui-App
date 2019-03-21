@@ -13,6 +13,7 @@
             height: 1.28rem;
             z-index: 9999; right: .4rem;
             top: .4rem;" />
+            <div class="C_num">{{goodsQty}}</div>
         </div>
         <div class="block">
             <el-carousel trigger="click">
@@ -34,8 +35,13 @@ export default {
     },
     watch:{
         $route(to,from){
-            console.log('watch:',to,from)
+            // console.log('watch:',to,from)
             this.getData()
+        }
+    },
+    computed:{
+        goodsQty(){
+            return this.$store.state.cartList.length;
         }
     },
     methods:{
@@ -43,7 +49,7 @@ export default {
             // 如何获取id
             let {id:good_id} = this.$route.params;
             let {data:{data}} = await this.$axios
-                .get("http://localhost:12580/goodslist/details", {
+                .get("/goodslist/details", {
                     params: {
                         good_id
                     }
@@ -66,13 +72,18 @@ export default {
             this.$router.push({name:'Detail_goods',query:{category,id},params:{category,id}})
             // history.back();
         },
+         async created(){
+  
+            let user_id = localStorage.getItem('id');
+            await this.$store.dispatch("getCartData",user_id);
+        },
         product_to_cart(){ // 加入购物车
             // 添加购物车
             // console.log('加入购物车');
             let {id:good_id} = this.$route.params;
             let user_id = localStorage.getItem('id');
             let param = {"good_id":good_id,"user_id":user_id,style:'女生款'};
-            this.$axios.post("http://localhost:12580/cart/addcart", this.$qs.stringify(param))
+            this.$axios.post("/cart/addcart", this.$qs.stringify(param))
             //成功返回
             .then(response => {
                 if(response.data.data.ok == 1){
@@ -81,11 +92,17 @@ export default {
                         message: '宝贝成功添加购物车',
                         type: 'success'
                     });
+                    if(response.data.count == 1000){
+                        // 商品不存在，添加购物车
+                        this.$store.state.cartList.push({good_id});
+                    }else {
+                        // 商品已经存在，添加商品数量
+                    }
                 }
             })
             //失败返回
             .catch(error => {
-                console.log(error);
+                // console.log(error);
             })
         }
     },
@@ -126,39 +143,51 @@ export default {
             border-radius: 50%;
             background-color: #333;
         }
-        // /deep/ html .pageBack img,body .pageBack img,#app .pageBack img,.View_details .pageBack img{
-        //     height: 1.28rem;
-        // }
-        // /deep/ html .product_to_cart img,body .product_to_cart img,#app .product_to_cart img,.View_details .product_to_cart img{
-        //     height: 1.28rem;
-        // }
-        // .pageBack,.product-add-to-cart{
-        //     display: block;
-        //     position: fixed;
-        //     z-index: 9999;
-        // }
-        // /deep/ body .View_details .pageBack,.product-add-to-cart img{
-           
-        //     width: 1.28rem;
-        //     height: 1.28rem;
-            
-        // }
-        // /deep/ .pageBack{
-        //     left: .4rem;
-        //     top: .4rem;
-        // }
-        
-        // /deep/ .product-add-to-cart img{
-        //     right: .4rem;
-        //     top: .4rem;
-        // }
-        // .el-carousel__item{
-        //     // overflow: hidden;
-        //     height: 13.12rem;
-        // }
+       
         /deep/ .el-carousel__item img {
             margin: 0;
             width: 10rem;
+        }
+        .pageBack,.product-share img{
+            display: block;
+            position: fixed;
+            width: 1.28rem;
+            height: 1.28rem;
+            z-index: 9999;
+        }
+        .product-add-to-cart{
+            position: fixed;
+            z-index: 9999;
+        }
+        .product-add-to-cart img{
+            display: block;
+            width: 1.28rem;
+            height: 1.28rem;
+        }
+                .pageBack{
+            left: .4rem;
+            top: .4rem;
+        }
+        .product-share img{
+            right: 2.0rem;
+            top: .4rem;
+        }
+        .product-add-to-cart{
+            right: .4rem;
+            top: .4rem;
+        }
+        .product-add-to-cart .C_num{
+            width: .5rem;
+            height: .5rem;
+            position: absolute;
+            top: -8px;
+            right: 0px;
+            border-radius: 50%;
+            background-color: #58bc58;
+            color: #fff;
+            font-weight: 700;
+            line-height: .5rem;
+            z-index: 9999;
         }
     }
 </style>

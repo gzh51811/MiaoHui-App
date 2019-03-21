@@ -50,7 +50,7 @@ export default {
     },
     watch:{
         $route(to,from){
-            console.log('watch:',to,from)
+            // console.log('watch:',to,from)
             this.getData()
         }
     },
@@ -59,7 +59,7 @@ export default {
         // console.log(category);
         this.title = {category:category}
         this.$axios
-        .get("http://localhost:12580/goodslist", {
+        .get("/goodslist", {
             params: {
                 "page": 1,
                 "limit": 20

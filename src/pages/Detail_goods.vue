@@ -60,7 +60,7 @@ export default {
     },
     watch:{
         $route(to,from){
-            console.log('watch:',to,from)
+            // console.log('watch:',to,from)
             this.getData()
         }
     },
@@ -74,13 +74,16 @@ export default {
             // 如何获取id
             let {id:good_id} = this.$route.params;
             let {data:{data}} = await this.$axios
-                .get("http://localhost:12580/goodslist/details", {
+                .get("/goodslist/details", {
                     params: {
                         good_id
                     }
                 })
             var goodsdata = data[0];
-
+            // console.log(goodsdata);
+            if(goodsdata.old_price != ''){
+                goodsdata.old_price = '￥'+goodsdata.old_price;
+            }
             this.goodsinfo = goodsdata;
             var imgs = [];
             for(let i = 1;i < 6;i++){
@@ -90,9 +93,19 @@ export default {
             this.goodsimg = imgs;
 
         },
+         async created(){
+  
+            let user_id = localStorage.getItem('id');
+            await this.$store.dispatch("getCartData",user_id);
+        },
         mpageBack(){// 上一页面
                 let category = this.title.category;
-                this.$router.push({name:'List',query:{category},params:{category}})
+                if(category == '首页'){
+                    history.back();
+                }else {
+                    
+                    this.$router.push({name:'List',query:{category},params:{category}})
+                }
         },
         share_product(){ // 分享商品
             let category = this.title.category;
@@ -102,22 +115,11 @@ export default {
         product_to_cart(){ // 加入购物车
             // 添加购物车
             this.$router.push({name:'Home_cart'})
-            // let {id:good_id} = this.$route.params;
-            // let user_id = localStorage.getItem('id');
-            // let param = {"good_id":good_id,"user_id":user_id,style:'女生款'};
-            // this.$axios.post("http://localhost:12580/cart/addcart", this.$qs.stringify(param))
-            // .then(response => {
-            //     if(response.data.data.ok == 1){
-            //         alert("宝贝成功添加购物车")
-            //     }
-            // })
-            // .catch(error => {
-            //     console.log(error);
-            // })
+
         },
         mechatClick(id){ // 联系客服
             // let good_id = id;
-            console.log(id);
+            // console.log(id);
             let category = this.title.category;
             this.$router.push({name:'View_details',query:{id},params:{id:id,category:category}})
         },
@@ -130,7 +132,7 @@ export default {
             let {id:good_id} = this.$route.params;
             let user_id = localStorage.getItem('id');
             let param = {"good_id":good_id,"user_id":user_id,style:'女生款'};
-            this.$axios.post("http://localhost:12580/cart/addcart", this.$qs.stringify(param))
+            this.$axios.post("/cart/addcart", this.$qs.stringify(param))
             .then(response => {
                 if(response.data.data.ok == 1){
                     // alert("宝贝成功添加购物车")
@@ -138,11 +140,17 @@ export default {
                         message: '宝贝成功购买',
                         type: 'success'
                     });
+                    if(response.data.count == 1000){
+                        // 商品不存在，添加购物车
+                        this.$store.state.cartList.push({good_id});
+                    }else {
+                        // 商品已经存在，添加商品数量
+                    }
                 }
             })
             //失败返回
             .catch(error => {
-                console.log(error);
+                // console.log(error);
             })
         },
         btnAddToCart(){ // 加入购物车
@@ -151,21 +159,29 @@ export default {
             let {id:good_id} = this.$route.params;
             let user_id = localStorage.getItem('id');
             let param = {"good_id":good_id,"user_id":user_id,style:'女生款'};
-            this.$axios.post("http://localhost:12580/cart/addcart", this.$qs.stringify(param))
+            this.$axios.post("/cart/addcart", this.$qs.stringify(param))
             //成功返回
             .then(response => {
+                // console.log(response);
                 if(response.data.data.ok == 1){
                     // alert("宝贝成功添加购物车")
                     this.$message({
                         message: '宝贝成功添加购物车',
                         type: 'success'
                     });
+                    if(response.data.count == 1000){
+                        // 商品不存在，添加购物车
+                        this.$store.state.cartList.push({good_id});
+                    }else {
+                        // 商品已经存在，添加商品数量
+                    }
                 }
             })
             //失败返回
             .catch(error => {
-                console.log(error);
+                // console.log(error);
             })
+            // list.
         }
     },
     created(){
@@ -180,19 +196,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    // body{
-    //     font-size: 1em;
-    //     line-height: 1.3;
-    //     font-family: sans-serif;
-    // }
-    // /deep/ .el-message.el-message--success{
-    //     width:auto !important;
-    //     top:80% !important;
-    // }
+
     a{
         text-decoration: none;
     }
     .goods{
+        padding-bottom: 1.066667rem;
         /deep/ .is-active button{
             background-color: #d5342d
         }

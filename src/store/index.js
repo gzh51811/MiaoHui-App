@@ -38,7 +38,7 @@ const store = new Vuex.Store({
     mutations: {
         changeRecommend(state, payload) {
             state.cartList=payload;
-            console.log(state.cartList);
+            // console.log(state.cartList);
         },
         // 删除商品
         removeGoods(state, good_id) {
@@ -53,7 +53,7 @@ const store = new Vuex.Store({
     actions: {
         getCartData(context, payload) {
             let param = { 'user_id': payload };
-            this._vm.$axios.post("http://localhost:12580/cart/list", this._vm.$qs.stringify(param))
+            this._vm.$axios.post("/cart/list", this._vm.$qs.stringify(param))
                 .then(response => {
                     // console.log(response);// 后台返回数据
                     let data = response.data.data;
@@ -64,7 +64,7 @@ const store = new Vuex.Store({
                     context.commit('changeRecommend',data);
                 })
                 .catch(error => {
-                    console.log(error);
+                    // console.log(error);
                 })
         }
     }

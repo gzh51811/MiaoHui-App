@@ -7,28 +7,14 @@
         <div class="wenzhang">
             <div class="wz_1" v-for="good in goodslist" :key="good.gid">
                 <img ref="elememt" :src="good.img1" alt="">
-                <span class="wz_s1">
-                    <a href="#" class="biaoti">{{good.Title}}</a>
+                <span class="wz_s1" @click="tiaozhuan(good.gid)">
+                    <a href="javascript:;" class="biaoti">{{good.Title}}</a>
                 </span>
-                <p>冻龄少女</p>
-                <p>阅读：<span class="yuedu">{{good.Read}}</span></p>
+                <div class="p">
+                    <p>冻龄少女</p>
+                    <p>阅读：<span class="yuedu">{{good.Read}}</span></p>
+                </div>
             </div>
-            <!-- <div class="wz_1">
-                <img ref="elememt" src="../assets/image/1551165706653559302.jpg" alt="">
-                <span class="wz_s1">
-                    <a href="#" class="biaoti">冰岛“黑科技”，冰冻时间</a>
-                </span>
-                <p>冻龄少女</p>
-                <p>阅读：<span class="yuedu">104</span></p>
-            </div>
-            <div class="wz_1">
-                <img ref="elememt" src="../assets/image/1551165706653559302.jpg" alt="">
-                <span class="wz_s1">
-                    <a href="#" class="biaoti">冰岛“黑科技”，冰冻时间</a>
-                </span>
-                <p>冻龄少女</p>
-                <p>阅读：<span class="yuedu">104</span></p>
-            </div> -->
             
         </div>
     </div>
@@ -43,14 +29,14 @@ export default {
     },
     created(){
         this.$axios
-        .get("http://localhost:12580/mylz", {
+        .get("/mylz", {
             params: {
                 "page": 1,
                 "limit": 20
             }
         })
         .then(res => {
-            console.log(res);
+            // console.log(res);
             let data = res.data.data;
             for(var i= 0;i < data.length;i++){
                 // console.log(data[i].img_cover)
@@ -58,8 +44,13 @@ export default {
                 // data[i].img_cover = './src/assets/image/' +data[i].img_cover;
             }
             this.goodslist = data;
-            console.log(data);
+            // console.log(data);
         });
+    },
+    methods:{
+        tiaozhuan(index){
+            this.$router.push({name:'Detail_article',query:{gid:index},params:{gid:index}});
+        }
     }
 }
 </script>
@@ -82,15 +73,14 @@ export default {
         // background: #0f0;
         overflow: auto;
         flex-direction: column;
-        margin-bottom: 80px;
+        margin-bottom: 1.6rem;
         .wz_1{
             width: 100%;
             // height: 300px;
             // background: #f50606;
             position: relative;
             border-bottom: 1px solid rgb(197, 197, 197);
-            padding-bottom: 5px;
-            margin-bottom: 5px;
+            margin-bottom: .533333rem;
             img{
                 width: 100%;
             }
@@ -100,24 +90,30 @@ export default {
                 top: 0;
                 left: 0;
                 width: 100%;
-                height: 121px;
-                opacity: 0.5;
-                background: #000;
-                padding-top: 120px;
+                height: 100%;
+                background: rgba(0,0,0,.5);
                 .biaoti{
                     display: block;
                     font-size: 22px;
                     text-decoration:none;
+                    line-height: 5.333333rem;
                     color: #fff;
                     font-weight:900;
                 }
             }
-            p{
-                text-align:left;
-                padding-left: 5px;
-                .yuedu{
-                    color:#f5a134;
-                    font-weight:900;
+            .p{
+                position: absolute;
+                bottom: -0.533333rem;
+                background: #fff;
+                width: 100%;
+                z-index: 5;
+                p{
+                    text-align:left;
+                    padding-left: 5px;
+                    .yuedu{
+                        color:#f5a134;
+                        font-weight:900;
+                    }
                 }
             }
         }

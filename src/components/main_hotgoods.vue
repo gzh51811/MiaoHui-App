@@ -2,7 +2,7 @@
 <div>
     <div class="hot_goods">
         <ul class="hot_goodslist">
-            <li v-for="(goods,index) in hotGoods" :key="index">
+            <li v-for="(goods,index) in hotGoods" :key="index" @click="jumpToDetail(goods.good_id)">
                 <img :src="goods.img_cover">
                 <h3>{{goods.good_name}}</h3>
                 <div class="bottom_price">
@@ -14,6 +14,10 @@
                 </div>
             </li>
         </ul>
+        <div class="limitBottom" v-show="limitBottom">我是有底线的</div>
+        <div class="loadingGif" v-show="loadingGif">
+            <img src="../assets/image/loading.gif" alt="">
+        </div>
     </div>
 </div>
 </template>
@@ -25,7 +29,9 @@ export default {
             hotGoods:[],
             count:0,
             page:1,
-            loading:true
+            loading:true,
+            loadingGif:false,
+            limitBottom:false
         }
     },
     mounted(){
@@ -35,6 +41,12 @@ export default {
         })
     },
     methods:{
+
+        //点击商品跳转
+        jumpToDetail(id){
+            let category = '首页'
+            this.$router.push({name:'Detail_goods',query:{id,category},params:{id,category}});
+        },
          //懒加载
         getScrollTop() {
         var scrollTop = 0;
@@ -75,51 +87,57 @@ export default {
                 this.getScrollHeight() - this.getClientHeight() - this.getScrollTop() <=
                 0
             ) {
-            this.load = false;
-            if (this.loading) {
-            let res = await this.$axios.get("http://localhost:12580/goodslist", {
-                    params: {
-                        "page": ++this.page,
-                        "limit": 5
+            if(this.page<this.count){
+                this.loadingGif = true;
+                this.load = false;
+                if (this.loading) {
+                let res = await this.$axios.get("/goodslist", {
+                        params: {
+                            "page": ++this.page,
+                            "limit": 5
+                        }
+                    })
+                    .then(res => {
+                    // console.log(res)
+                    let arr = res.data.data;
+                    // console.log(arr)
+                    // console.log(this.goodslist)
+                    for(let i=0; i<arr.length; i++){
+                        arr[i].img_cover = require('../assets/image/'+arr[i].img_cover);
                     }
-                })
-                .then(res => {
+                    setTimeout(() => {
+                        for (var i = 0; i < arr.length; i++) {
+                        this.hotGoods.push(arr[i]);
+                        }
+                        this.loadingGif = false;
+                    }, 2000);
+                    this.load = true;
+                    });
                 // console.log(res)
-                let arr = res.data.data;
-                // console.log(arr)
-                // console.log(this.goodslist)
-                for(let i=0; i<arr.length; i++){
-                    arr[i].img_cover = require('../assets/image/'+arr[i].img_cover);
                 }
-                setTimeout(() => {
-                    for (var i = 0; i < arr.length; i++) {
-                    this.hotGoods.push(arr[i]);
-                    }
-                }, 2000);
-                this.load = true;
-                });
-            // console.log(res)
+            }else{
+                this.limitBottom = true;
             }
         }
     }
 
     },
     created(){
-        this.$axios.get("http://localhost:12580/goodslist", {
+        this.$axios.get("/goodslist", {
             params: {
                 "page": 1,
                 "limit": 5
             }
         })
         .then(res => {
-            console.log(res);
+            // console.log(res);
             let data = res.data.data;
             for(let i=0; i<data.length; i++){
                 data[i].img_cover = require('../assets/image/'+data[i].img_cover);
             }
             this.hotGoods = data;
             this.count = Math.ceil(res.data.count/5);
-            console.log(this.count);
+            // console.log(this.count);
         });
     }
 }
@@ -163,6 +181,27 @@ export default {
                     }
                 }
             }
+        }
+        .loadingGif{
+            position: fixed;
+            width: 2.666667rem;
+            height: 2rem;
+            border-radius: .16rem;
+            overflow: hidden;
+            z-index: 12;
+            top: 50%;
+            left: 50%;
+            margin-left: -1.333333rem;
+            img{
+                width: 2.666667rem;
+                height: 2rem;
+            }
+        }
+        .limitBottom{
+            height: 2.666667rem;
+            width: 100%;
+            line-height: 2.666667rem;
+            font-size: .426667rem;
         }
     }
 </style>

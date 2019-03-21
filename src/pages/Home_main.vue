@@ -1,11 +1,11 @@
 <template>
-<div>
+<div style="height:100%">
     <div class="main_con">
         <div class="header">
             <img src="../assets/image/touxiang.png" alt="">
             <input type="search" placeholder="搜素妙汇创意商品">
         </div>
-        <div class="main">
+        <div class="main" style="padding-top:1.333333rem">
             
             <!-- 轮播图 -->
             <mainCar></mainCar>
@@ -45,7 +45,7 @@ export default {
 .main_con{
     display: flex;
     flex-direction: column;
-    flex: 1;
+    overflow: hidden;
 }
     .header{
         display: flex;
@@ -53,6 +53,12 @@ export default {
         background: #232426;
         height: 1.333333rem;
         padding: 0 .533333rem;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        box-sizing: border-box;
+        z-index: 10;
         img{
             width: .746667rem;
             height: .746667rem;
